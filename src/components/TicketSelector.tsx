@@ -47,7 +47,7 @@ export function TicketSelector() {
 
 
   return (
-    <Card className="shadow-lg bg-card border-0 rounded-lg">
+    <Card className="shadow-lg bg-card border-0 rounded-lg text-card-foreground">
       <CardContent className="p-4">
         <div className="text-center mb-4">
           <p className="text-sm text-foreground">

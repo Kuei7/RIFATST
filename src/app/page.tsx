@@ -33,10 +33,12 @@ export default function Home() {
                  </div>
             </div>
         </div>
-        <div className="container mx-auto px-4 py-6 md:py-10">
-          <div className="max-w-2xl mx-auto">
-            <TicketSelector />
-          </div>
+        <div className="bg-white">
+            <div className="container mx-auto px-4 py-6 md:py-10">
+              <div className="max-w-2xl mx-auto">
+                <TicketSelector />
+              </div>
+            </div>
         </div>
       </main>
       <Footer />

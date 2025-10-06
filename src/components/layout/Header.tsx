@@ -6,7 +6,7 @@ export function Header() {
   const logoImage = PlaceHolderImages.find(p => p.id === 'vivasorte-logo');
 
   return (
-    <header className="bg-card shadow-md">
+    <header className="bg-white shadow-md">
       <div className="container mx-auto px-4">
         <div className="flex justify-start items-center h-16">
           <Link href="/">

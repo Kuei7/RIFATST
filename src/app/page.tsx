@@ -15,14 +15,14 @@ export default function Home() {
       <main className="flex-grow">
         <div className="bg-primary py-4 md:py-6">
             <div className="container mx-auto px-4">
-                 <div className="max-w-2xl mx-auto">
+                 <div className="max-w-3xl mx-auto">
                     {bannerImage && (
                     <div className="rounded-lg overflow-hidden shadow-2xl relative">
                         <Image
                         src={bannerImage.imageUrl}
                         alt={bannerImage.description}
-                        width={800}
-                        height={450}
+                        width={900}
+                        height={506}
                         className="w-full object-cover"
                         data-ai-hint={bannerImage.imageHint}
                         priority

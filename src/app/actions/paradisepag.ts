@@ -2,9 +2,9 @@
 'use server';
 
 const API_TOKEN = 'yZLG3dKGFhhPYE4Mezz1HLMtqXmfnsokvD22tiklMz2BvdMHODvPQ0IanOCk';
-const OFFER_HASH = 'or7s9g2c33';
+// OFFER_HASH will be passed dynamically
 const PRODUCT_HASH = '034fadkvwm';
-const BASE_AMOUNT = 1998;
+// BASE_AMOUNT will be passed dynamically
 const PRODUCT_TITLE = 'VIVA SORTE';
 const IS_DROPSHIPPING = false;
 const PIX_EXPIRATION_MINUTES = 5;
@@ -39,6 +39,7 @@ export async function checkPaymentStatus(hash) {
 }
 
 export async function createPayment(data) {
+    const { amount, offerHash } = data;
     const api_url = `https://api.paradisepagbr.com/api/public/v1/transactions?api_token=${API_TOKEN}`;
     let customer_data = data.customer || {};
     const utms = data.utms || {};
@@ -99,11 +100,11 @@ export async function createPayment(data) {
         customer_data.zip_code = customer_data.zip_code ?? '00000000';
     }
 
-    const cart_items = [{ "product_hash": PRODUCT_HASH, "title": PRODUCT_TITLE, "price": BASE_AMOUNT, "quantity": 1, "operation_type": 1, "tangible": IS_DROPSHIPPING }];
+    const cart_items = [{ "product_hash": PRODUCT_HASH, "title": PRODUCT_TITLE, "price": amount, "quantity": 1, "operation_type": 1, "tangible": IS_DROPSHIPPING }];
 
     const payload = { 
-        "amount": Math.round(BASE_AMOUNT), 
-        "offer_hash": OFFER_HASH, 
+        "amount": Math.round(amount), 
+        "offer_hash": offerHash, 
         "payment_method": "pix", 
         "customer": customer_data, 
         "cart": cart_items, 

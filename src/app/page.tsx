@@ -5,7 +5,6 @@ import { TicketSelector } from '@/components/TicketSelector';
 import { BeneficiaryInstitution } from '@/components/BeneficiaryInstitution';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { VivaPrivilegios } from '@/components/VivaPrivilegios';
-import ParadisePagCheckout from '@/components/ParadisePagCheckout';
 
 export default function Home() {
   const bannerImage = PlaceHolderImages.find(p => p.id === 'vivasorte-banner');
@@ -49,7 +48,6 @@ export default function Home() {
         </main>
         <Footer />
       </div>
-      <ParadisePagCheckout />
     </>
   );
 }

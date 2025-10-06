@@ -8,7 +8,7 @@ export function Header() {
   return (
     <header className="bg-white shadow-md">
       <div className="container mx-auto px-4">
-        <div className="flex justify-start items-center h-16">
+        <div className="flex justify-start items-center h-12">
           <Link href="/">
             {logoImage ? (
               <Image

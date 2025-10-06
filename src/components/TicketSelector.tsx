@@ -48,9 +48,9 @@ export function TicketSelector() {
 
   return (
     <Card className="shadow-lg bg-card border-0 rounded-lg text-card-foreground">
-      <CardContent className="p-4">
+      <CardContent className="p-4 bg-white">
         <div className="text-center mb-4">
-          <p className="text-sm text-foreground">
+          <p className="text-sm text-black">
             Sorteio <Badge className="bg-yellow-400 text-black font-bold">HOJE</Badge> por apenas <span className="font-bold">R$0,99</span>
           </p>
         </div>

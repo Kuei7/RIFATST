@@ -96,7 +96,7 @@ export function TicketSelector() {
           <ShoppingCart className="mr-2 h-6 w-6" />
           Comprar Títulos
         </Button>
-        <p className="text-center text-xs mt-4 text-muted-foreground">Comprar mais títulos aumenta suas chances de ganhar!</p>
+        <p className="text-center text-xs mt-4 text-black">Comprar mais títulos aumenta suas chances de ganhar!</p>
       </CardContent>
     </Card>
   );

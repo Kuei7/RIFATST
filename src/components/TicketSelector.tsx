@@ -50,12 +50,12 @@ export function TicketSelector() {
     <Card className="shadow-lg bg-card border-0 rounded-lg text-card-foreground">
       <CardContent className="p-4 bg-white">
         <div className="text-center mb-4">
-            <p className="text-sm text-black flex items-center justify-center gap-2">
+            <div className="text-sm text-black flex items-center justify-center gap-2">
                 Sorteio 
                 <Badge className="bg-orange-500 text-white font-bold">HOJE</Badge> 
                 por apenas 
                 <Badge className="bg-primary text-primary-foreground font-bold">R$0,99</Badge>
-            </p>
+            </div>
         </div>
 
         <div className="grid grid-cols-3 gap-2 mb-4">

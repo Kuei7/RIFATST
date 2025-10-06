@@ -6,7 +6,6 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Plus, Minus, Star, ShoppingCart } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useToast } from "@/hooks/use-toast"
 
 type TicketOption = {
   id: number;
@@ -27,20 +26,12 @@ const ticketOptions: TicketOption[] = [
 export function TicketSelector() {
   const [selectedOptionId, setSelectedOptionId] = useState<number | null>(null);
   const [quantity, setQuantity] = useState(1);
-  const { toast } = useToast()
 
   const selectedOption = useMemo(
     () => ticketOptions.find(opt => opt.id === selectedOptionId),
     [selectedOptionId]
   );
   
-  const handlePurchase = () => {
-      toast({
-        title: "Compra Confirmada!",
-        description: `Você comprou ${quantity}x pacote(s) de ${selectedOption?.tickets} bilhetes. Boa sorte!`,
-      })
-  }
-
   const handleQuantityChange = (amount: number) => {
     setQuantity(prev => Math.max(1, prev + amount));
   };
@@ -92,7 +83,7 @@ export function TicketSelector() {
             </Button>
         </div>
 
-        <Button size="lg" className="w-full h-14 text-xl font-bold bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg uppercase" onClick={handlePurchase} disabled={!selectedOption}>
+        <Button id="comprar-titulos-btn" size="lg" className="w-full h-14 text-xl font-bold bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg uppercase" disabled={!selectedOption}>
           <ShoppingCart className="mr-2 h-6 w-6" />
           Comprar Títulos
         </Button>

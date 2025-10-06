@@ -45,7 +45,7 @@ export function Footer() {
             Sorteios lastreados por Títulos de Capitalização, da Modalidade Incentivo, emitidos pela VIA Capitalização S.A, inscrita no CNPJ sob nº 88.076.302/0001-94, e aprovados pela SUSEP através do registro na SUSEP Sorteio nº 15414.652257/2023-51. O valor das premiações aqui indicados são líquidos, já descontado o devido imposto de renda de 25%. O registro deste plano na SUSEP não implica, por parte da Autarquia, incentivo ou recomendação a sua comercialização.
           </p>
 
-          <Separator className="my-4" />
+          <Separator className="my-4 bg-border" />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-4xl text-left">
             <div className="flex flex-col items-center md:items-start">

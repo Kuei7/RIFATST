@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { TicketSelector } from '@/components/TicketSelector';
+import { BeneficiaryInstitution } from '@/components/BeneficiaryInstitution';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function Home() {
@@ -37,6 +38,7 @@ export default function Home() {
             <div className="container mx-auto px-4 py-4 md:py-8">
               <div className="max-w-2xl mx-auto">
                 <TicketSelector />
+                <BeneficiaryInstitution />
               </div>
             </div>
         </div>

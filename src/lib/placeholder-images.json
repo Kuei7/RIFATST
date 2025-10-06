@@ -11,6 +11,12 @@
       "description": "Viva Sorte promotional banner",
       "imageUrl": "https://s3.typebot.io/public/workspaces/cm8gbxl5b000ba3ncy4y16grd/typebots/cmgf6qv060007i604f4na2kac/blocks/ai5wntyr0avixxep6fi4fcy5?v=1759758481992",
       "imageHint": "lottery prize money"
+    },
+    {
+      "id": "hospital-cancer-londrina-logo",
+      "description": "Logo do Hospital do Câncer de Londrina",
+      "imageUrl": "https://s3.typebot.io/public/workspaces/cm8gbxl5b000ba3ncy4y16grd/typebots/cmgf6qv060007i604f4na2kac/blocks/pm29dadl7h13le24n760arqj?v=1759768359711",
+      "imageHint": "hospital logo"
     }
   ]
 }

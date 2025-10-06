@@ -6,7 +6,7 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Separator } from '@/components/ui/separator';
 
 export function Footer() {
-  const vivaPrivilegiosMainLogo = PlaceHolderImages.find(p => p.id === 'viva-privilegios-logo');
+  const vivaSorteLogo = PlaceHolderImages.find(p => p.id === 'vivasorte-logo');
   const viaCapLogo = PlaceHolderImages.find(p => p.id === 'viacap-logo');
   const vivaPrivilegiosLogo = PlaceHolderImages.find(p => p.id === 'viva-privilegios-logo');
   const edjDigitalLogo = PlaceHolderImages.find(p => p.id === 'edjdigital-logo');
@@ -15,14 +15,14 @@ export function Footer() {
     <footer className="bg-card text-card-foreground py-8">
       <div className="container mx-auto px-4 text-center">
         <div className="flex flex-col items-center gap-6">
-          {vivaPrivilegiosMainLogo && (
+          {vivaSorteLogo && (
             <Image
-              src={vivaPrivilegiosMainLogo.imageUrl}
-              alt={vivaPrivilegiosMainLogo.description}
+              src={vivaSorteLogo.imageUrl}
+              alt={vivaSorteLogo.description}
               width={180}
               height={45}
               className="object-contain"
-              data-ai-hint={vivaPrivilegiosMainLogo.imageHint}
+              data-ai-hint={vivaSorteLogo.imageHint}
             />
           )}
 

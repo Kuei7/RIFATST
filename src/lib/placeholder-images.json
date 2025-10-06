@@ -23,6 +23,18 @@
       "description": "Logo Viva Privilégios",
       "imageUrl": "https://s3.typebot.io/public/workspaces/cm8gbxl5b000ba3ncy4y16grd/typebots/cmgf6qv060007i604f4na2kac/blocks/vki332jz1ye397kscdu5luer?v=1759769019003",
       "imageHint": "privileges logo"
+    },
+    {
+      "id": "viacap-logo",
+      "description": "Logo ViaCap",
+      "imageUrl": "https://s3.typebot.io/public/workspaces/cm8gbxl5b000ba3ncy4y16grd/typebots/cmgf6qv060007i604f4na2kac/blocks/bklh1f88i00i845k9y70a8t0?v=1761661603561",
+      "imageHint": "capitalization logo"
+    },
+    {
+      "id": "edjdigital-logo",
+      "description": "Logo EDJ.digital",
+      "imageUrl": "https://s3.typebot.io/public/workspaces/cm8gbxl5b000ba3ncy4y16grd/typebots/cmgf6qv060007i604f4na2kac/blocks/d5wyy6zay8zvgk08u1q9wn20?v=1761661623910",
+      "imageHint": "digital solutions logo"
     }
   ]
 }

@@ -63,9 +63,9 @@ export function TicketSelector() {
               className={cn(
                 "relative text-center p-3 rounded-md border-2 transition-all duration-200 transform hover:scale-105 text-primary-foreground",
                 selectedOptionId === option.id
-                  ? 'border-accent bg-accent/20 text-accent-foreground'
+                  ? 'border-accent bg-accent text-accent-foreground'
                   : 'bg-primary border-primary',
-                option.id === 3 ? 'bg-accent border-accent text-accent-foreground' : ''
+                option.id === 3 && selectedOptionId !== 3 ? 'bg-accent border-accent text-accent-foreground' : ''
               )}
             >
               {option.isPopular && (

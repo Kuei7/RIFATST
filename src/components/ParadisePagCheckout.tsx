@@ -60,17 +60,14 @@ export const ParadisePagProvider = ({ children }) => {
     };
     
     useEffect(() => {
-        const script = document.createElement('script');
-        script.src = "https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js";
-        script.async = true;
-        document.body.appendChild(script);
-
-        return () => {
-             const existingScript = document.querySelector('script[src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"]');
-            if (existingScript && document.body.contains(existingScript)) {
-                 document.body.removeChild(existingScript);
-            }
-        };
+        const scriptId = 'qrcode-script';
+        if (!document.getElementById(scriptId)) {
+            const script = document.createElement('script');
+            script.id = scriptId;
+            script.src = "https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js";
+            script.async = true;
+            document.body.appendChild(script);
+        }
     }, []);
 
     useEffect(() => {
@@ -97,14 +94,30 @@ export const ParadisePagProvider = ({ children }) => {
     }, [modalOpen, pixData]);
 
     useEffect(() => {
-        if (modalOpen && pixData?.pix_qr_code && qrCodeRef.current && window.QRCode) {
-            qrCodeRef.current.innerHTML = "";
-            new window.QRCode(qrCodeRef.current, {
-                text: pixData.pix_qr_code,
-                width: 256,
-                height: 256,
-                correctLevel: window.QRCode.CorrectLevel.H
-            });
+        if (modalOpen && pixData?.pix_qr_code && qrCodeRef.current) {
+            if(window.QRCode) {
+                qrCodeRef.current.innerHTML = "";
+                new window.QRCode(qrCodeRef.current, {
+                    text: pixData.pix_qr_code,
+                    width: 256,
+                    height: 256,
+                    correctLevel: window.QRCode.CorrectLevel.H
+                });
+            } else {
+                // Retry if QRCode library is not loaded yet
+                const retryInterval = setInterval(() => {
+                    if (window.QRCode) {
+                        clearInterval(retryInterval);
+                        qrCodeRef.current.innerHTML = "";
+                        new window.QRCode(qrCodeRef.current, {
+                            text: pixData.pix_qr_code,
+                            width: 256,
+                            height: 256,
+                            correctLevel: window.QRCode.CorrectLevel.H
+                        });
+                    }
+                }, 100);
+            }
         }
     }, [modalOpen, pixData]);
 

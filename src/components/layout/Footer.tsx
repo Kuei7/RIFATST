@@ -8,7 +8,7 @@ import { Separator } from '@/components/ui/separator';
 export function Footer() {
   const vivaSorteLogo = PlaceHolderImages.find(p => p.id === 'vivasorte-logo');
   const viaCapLogo = PlaceHolderImages.find(p => p.id === 'viacap-logo');
-  const vivaPrivilegiosLogo = PlaceHolderImages.find(p => p.id === 'viva-privilegios-logo');
+  const promocaoLogo = PlaceHolderImages.find(p => p.id === 'promocao-logo');
   const edjDigitalLogo = PlaceHolderImages.find(p => p.id === 'edjdigital-logo');
 
   return (
@@ -63,14 +63,14 @@ export function Footer() {
             </div>
             <div className="flex flex-col items-center md:items-start">
               <p className="text-sm font-semibold mb-2">Promoção realizada por:</p>
-              {vivaPrivilegiosLogo && (
+              {promocaoLogo && (
                 <Image
-                  src={vivaPrivilegiosLogo.imageUrl}
-                  alt={vivaPrivilegiosLogo.description}
+                  src={promocaoLogo.imageUrl}
+                  alt={promocaoLogo.description}
                   width={120}
                   height={40}
                   className="object-contain"
-                  data-ai-hint={vivaPrivilegiosLogo.imageHint}
+                  data-ai-hint={promocaoLogo.imageHint}
                 />
               )}
             </div>

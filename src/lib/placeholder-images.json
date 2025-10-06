@@ -27,13 +27,19 @@
     {
       "id": "viacap-logo",
       "description": "Logo ViaCap",
-      "imageUrl": "https://s3.typebot.io/public/workspaces/cm8gbxl5b000ba3ncy4y16grd/typebots/cmgf6qv060007i604f4na2kac/blocks/bklh1f88i00i845k9y70a8t0?v=1761661603561",
+      "imageUrl": "https://s3.typebot.io/public/workspaces/cm8gbxl5b000ba3ncy4y16grd/typebots/cmgf6qv060007i604f4na2kac/blocks/vki332jz1ye397kscdu5luer?v=1759769019003",
       "imageHint": "capitalization logo"
+    },
+    {
+      "id": "promocao-logo",
+      "description": "Logo Promoção",
+      "imageUrl": "https://s3.typebot.io/public/workspaces/cm8gbxl5b000ba3ncy4y16grd/typebots/cmgf6qv060007i604f4na2kac/blocks/zj8zq152odae9zhdkukbdfh6?v=1759769400974",
+      "imageHint": "promotion logo"
     },
     {
       "id": "edjdigital-logo",
       "description": "Logo EDJ.digital",
-      "imageUrl": "https://s3.typebot.io/public/workspaces/cm8gbxl5b000ba3ncy4y16grd/typebots/cmgf6qv060007i604f4na2kac/blocks/d5wyy6zay8zvgk08u1q9wn20?v=1761661623910",
+      "imageUrl": "https://s3.typebot.io/public/workspaces/cm8gbxl5b000ba3ncy4y16grd/typebots/cmgf6qv060007i604f4na2kac/blocks/p9bmdem0yjnc0d1whobwnf1w?v=1759769440819",
       "imageHint": "digital solutions logo"
     }
   ]

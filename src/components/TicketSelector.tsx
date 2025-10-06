@@ -6,7 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Plus, Minus, Star, ShoppingCart } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import ParadisePagCheckout, { useParadisePag } from '@/components/ParadisePagCheckout';
+import { useParadisePag } from '@/components/ParadisePagCheckout';
 
 type TicketOption = {
   id: number;
@@ -48,7 +48,7 @@ export function TicketSelector() {
     if (!selectedOption) return;
 
     const checkoutData = {
-      amount: totalPrice * 100, // convert to cents
+      amount: Math.round(totalPrice * 100), // convert to cents and round
       offerHash: selectedOption.offerHash,
     };
     
@@ -56,7 +56,7 @@ export function TicketSelector() {
   };
 
   return (
-    <>
+    
       <Card className="shadow-lg bg-card border-0 rounded-lg text-card-foreground">
         <CardContent className="p-4 bg-white">
           <div className="text-center mb-4">
@@ -112,6 +112,6 @@ export function TicketSelector() {
           <p className="text-center text-xs mt-4 text-black">Comprar mais títulos aumenta suas chances de ganhar!</p>
         </CardContent>
       </Card>
-    </>
+    
   );
 }

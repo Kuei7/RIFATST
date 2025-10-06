@@ -13,14 +13,14 @@ export function BeneficiaryInstitution() {
           <Image
             src={logo.imageUrl}
             alt={logo.description}
-            width={200}
-            height={50}
+            width={150}
+            height={40}
             className="mx-auto mb-4 object-contain"
             data-ai-hint={logo.imageHint}
           />
         )}
-        <h2 className="text-xl font-bold mb-4 font-headline">Instituição beneficiada</h2>
-        <p className="text-sm text-left">
+        <h2 className="text-xl font-bold mb-2 font-headline">Instituição beneficiada</h2>
+        <p className="text-xs text-left">
           O Hospital do Câncer de Londrina, fundado em 08 de novembro de 1965 por Lucilla Pinto Ballalai, foi originalmente chamado Centro Norte Paranaense de Pesquisas Médicas. Criado com o objetivo de melhorar o tratamento do câncer e a qualidade de vida, o hospital focava inicialmente na prevenção do câncer de colo de útero entre as mulheres de Londrina e região. A instituição sempre buscou aprimorar seus recursos humanos, científicos e tecnológicos.
         </p>
       </div>

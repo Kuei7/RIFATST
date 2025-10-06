@@ -4,6 +4,7 @@ import { Footer } from '@/components/layout/Footer';
 import { TicketSelector } from '@/components/TicketSelector';
 import { BeneficiaryInstitution } from '@/components/BeneficiaryInstitution';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { VivaPrivilegios } from '@/components/VivaPrivilegios';
 
 export default function Home() {
   const bannerImage = PlaceHolderImages.find(p => p.id === 'vivasorte-banner');
@@ -39,6 +40,7 @@ export default function Home() {
               <div className="max-w-2xl mx-auto">
                 <TicketSelector />
                 <BeneficiaryInstitution />
+                <VivaPrivilegios />
               </div>
             </div>
         </div>

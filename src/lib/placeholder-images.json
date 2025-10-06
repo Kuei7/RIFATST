@@ -17,6 +17,12 @@
       "description": "Logo do Hospital do Câncer de Londrina",
       "imageUrl": "https://s3.typebot.io/public/workspaces/cm8gbxl5b000ba3ncy4y16grd/typebots/cmgf6qv060007i604f4na2kac/blocks/pm29dadl7h13le24n760arqj?v=1759768359711",
       "imageHint": "hospital logo"
+    },
+    {
+      "id": "viva-privilegios-logo",
+      "description": "Logo Viva Privilégios",
+      "imageUrl": "https://s3.typebot.io/public/workspaces/cm8gbxl5b000ba3ncy4y16grd/typebots/cmgf6qv060007i604f4na2kac/blocks/vki332jz1ye397kscdu5luer?v=1759769019003",
+      "imageHint": "privileges logo"
     }
   ]
 }

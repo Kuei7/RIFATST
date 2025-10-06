@@ -11,7 +11,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen bg-background">
       <Header />
       <main className="flex-grow">
-        <div className="bg-white py-6 md:py-8">
+        <div className="bg-background py-6 md:py-8">
             <div className="container mx-auto px-4">
                  <div className="max-w-2xl mx-auto">
                     {bannerImage && (

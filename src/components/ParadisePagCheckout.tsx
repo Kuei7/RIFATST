@@ -44,8 +44,8 @@ export const ParadisePagProvider = ({ children }) => {
             };
             const result = await createPayment(paymentData);
 
-            if (result.status >= 200 && result.status < 300) {
-                setPixData(result.data);
+            if (result.status >= 200 && result.status < 300 && result.data.transaction) {
+                setPixData(result.data.transaction);
                 setModalOpen(true);
             } else {
                 console.error("Erro ao criar pagamento:", result);

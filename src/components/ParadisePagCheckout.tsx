@@ -95,29 +95,21 @@ export const ParadisePagProvider = ({ children }) => {
 
     useEffect(() => {
         if (modalOpen && pixData?.pix_qr_code && qrCodeRef.current) {
-            if(window.QRCode) {
-                qrCodeRef.current.innerHTML = "";
-                new window.QRCode(qrCodeRef.current, {
-                    text: pixData.pix_qr_code,
-                    width: 256,
-                    height: 256,
-                    correctLevel: window.QRCode.CorrectLevel.H
-                });
-            } else {
-                // Retry if QRCode library is not loaded yet
-                const retryInterval = setInterval(() => {
-                    if (window.QRCode) {
-                        clearInterval(retryInterval);
-                        qrCodeRef.current.innerHTML = "";
-                        new window.QRCode(qrCodeRef.current, {
-                            text: pixData.pix_qr_code,
-                            width: 256,
-                            height: 256,
-                            correctLevel: window.QRCode.CorrectLevel.H
-                        });
-                    }
-                }, 100);
-            }
+            const generateQrCode = () => {
+                if (window.QRCode) {
+                    qrCodeRef.current.innerHTML = ""; // Limpa o QR Code anterior
+                    new window.QRCode(qrCodeRef.current, {
+                        text: pixData.pix_qr_code,
+                        width: 256,
+                        height: 256,
+                        correctLevel: window.QRCode.CorrectLevel.H
+                    });
+                } else {
+                    // Se a lib ainda não carregou, tenta de novo em 100ms
+                    setTimeout(generateQrCode, 100);
+                }
+            };
+            generateQrCode();
         }
     }, [modalOpen, pixData]);
 

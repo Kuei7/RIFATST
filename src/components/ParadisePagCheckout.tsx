@@ -121,6 +121,12 @@ export const ParadisePagProvider = ({ children }) => {
         }
     }, [modalOpen, pixData]);
 
+    useEffect(() => {
+        if (pixData) {
+            console.log('Conteúdo do estado pixData:', pixData);
+        }
+    }, [pixData]);
+
     const handleCopy = () => {
         navigator.clipboard.writeText(pixData.pix_qr_code).then(() => {
             alert('Código PIX copiado!');

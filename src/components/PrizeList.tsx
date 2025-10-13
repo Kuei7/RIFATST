@@ -20,8 +20,8 @@ const prizes = [
 export function PrizeList() {
     return (
         <Card className="mt-8 shadow-lg bg-card border-0 rounded-lg text-card-foreground">
-            <CardHeader className="p-4 bg-white rounded-t-lg">
-                <CardTitle className="text-center font-headline text-2xl font-bold text-gray-800">
+            <CardHeader className="p-4 bg-primary rounded-t-lg">
+                <CardTitle className="text-center font-headline text-2xl font-bold text-primary-foreground">
                     COTAS PREMIADAS
                 </CardTitle>
             </CardHeader>

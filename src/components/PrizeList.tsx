@@ -89,7 +89,7 @@ export function PrizeList() {
                 </div>
                 {visibleCount < allPrizes.length && (
                     <div className="text-center mt-4">
-                        <Button onClick={handleShowMore} variant="outline" className="text-primary border-primary hover:bg-primary/10 hover:text-primary">
+                        <Button onClick={handleShowMore} variant="default" className="bg-accent hover:bg-accent/90 text-accent-foreground font-bold">
                             VER MAIS
                         </Button>
                     </div>

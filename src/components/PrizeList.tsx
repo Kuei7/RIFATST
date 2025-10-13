@@ -6,8 +6,8 @@ import { Trophy, Ticket } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const prizes = [
-    { number: '01301155', value: 'R$ 200,00', winner: 'Wagner Henr...', status: 'claimed' },
-    { number: '01537696', value: 'R$ 100,00', winner: 'Sandro Antu...', status: 'claimed' },
+    { number: '01301155', value: 'R$ 500,00', winner: 'Wagner Henr...', status: 'claimed' },
+    { number: '01537696', value: 'R$ 500,00', winner: 'Sandro Antu...', status: 'claimed' },
     { number: '1389119', value: 'R$ 500,00', winner: null, status: 'available' },
     { number: '02665562', value: 'R$ 500,00', winner: null, status: 'available' },
     { number: '04474896', value: 'R$ 500,00', winner: null, status: 'available' },

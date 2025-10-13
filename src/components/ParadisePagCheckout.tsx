@@ -1,7 +1,7 @@
 // @ts-nocheck
 "use client";
 import React, { useEffect, useState, useRef, createContext, useContext } from 'react';
-import { createPayment, checkPaymentStatus } from '@/app/actions/paradisepag';
+import { createPayment } from '@/app/actions/paradisepag';
 
 const CHECKOUT_CONFIG = {
     "pixModalTitle": "Verificação via PIX",
@@ -19,21 +19,22 @@ const CHECKOUT_CONFIG = {
     "pixModalInputBorderColor": "#d1d5db",
     "pixModalInputTextColor": "#374151",
     "pixExpirationMinutes": 5,
-    "upsellUrl": "https://vivasorte.com.br/obrigado",
 };
 
 const ParadisePagContext = createContext(null);
 
-export const ParadisePagProvider = ({ children }) => {
+export const ParadisePagProvider = ({ children, onPaymentConfirm }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
     const [pixData, setPixData] = useState(null);
     const [checkoutData, setCheckoutData] = useState(null);
+    const [showConfirmButton, setShowConfirmButton] = useState(false);
     const qrCodeRef = useRef(null);
 
     const createCheckout = async (data) => {
         setCheckoutData(data);
         setIsLoading(true);
+        setShowConfirmButton(false);
         try {
             const utms = Object.fromEntries(new URLSearchParams(window.location.search));
             const paymentData = { 
@@ -48,8 +49,9 @@ export const ParadisePagProvider = ({ children }) => {
                 setPixData(result.data);
                 setModalOpen(true);
             } else {
-                console.error("Erro ao criar pagamento:", result);
-                alert('Não foi possível gerar o PIX. Tente novamente.');
+                const errorMessage = result.error || (result.data ? JSON.stringify(result.data) : 'Erro desconhecido');
+                console.error("Erro ao criar pagamento:", errorMessage);
+                alert(`Não foi possível gerar o PIX. Tente novamente. Detalhe: ${errorMessage}`);
             }
         } catch (error) {
             console.error("Erro no checkout:", error);
@@ -71,53 +73,31 @@ export const ParadisePagProvider = ({ children }) => {
     }, []);
 
     useEffect(() => {
-        let interval;
-        if (modalOpen && pixData?.hash) {
-            interval = setInterval(async () => {
-                try {
-                    const statusResult = await checkPaymentStatus(pixData.hash);
-                    if (statusResult.payment_status === 'paid') {
-                        clearInterval(interval);
-                        if (CHECKOUT_CONFIG.upsellUrl) {
-                            window.location.href = CHECKOUT_CONFIG.upsellUrl;
-                        } else {
-                            setModalOpen(false);
-                            alert('Pagamento confirmado!');
-                        }
-                    }
-                } catch (error) {
-                    console.error("Erro ao verificar status do pagamento:", error);
-                }
-            }, 3000);
-        }
-        return () => clearInterval(interval);
-    }, [modalOpen, pixData]);
+      let timeout;
+      if(modalOpen) {
+        timeout = setTimeout(() => {
+          setShowConfirmButton(true);
+        }, 5000);
+      }
+      return () => clearTimeout(timeout);
+    }, [modalOpen]);
 
     useEffect(() => {
         if (modalOpen && pixData?.pix_qr_code && qrCodeRef.current) {
-            if(window.QRCode) {
-                qrCodeRef.current.innerHTML = "";
-                new window.QRCode(qrCodeRef.current, {
-                    text: pixData.pix_qr_code,
-                    width: 256,
-                    height: 256,
-                    correctLevel: window.QRCode.CorrectLevel.H
-                });
-            } else {
-                // Retry if QRCode library is not loaded yet
-                const retryInterval = setInterval(() => {
-                    if (window.QRCode) {
-                        clearInterval(retryInterval);
-                        qrCodeRef.current.innerHTML = "";
-                        new window.QRCode(qrCodeRef.current, {
-                            text: pixData.pix_qr_code,
-                            width: 256,
-                            height: 256,
-                            correctLevel: window.QRCode.CorrectLevel.H
-                        });
-                    }
-                }, 100);
-            }
+            const generateQRCode = () => {
+                if(window.QRCode) {
+                    qrCodeRef.current.innerHTML = "";
+                    new window.QRCode(qrCodeRef.current, {
+                        text: pixData.pix_qr_code,
+                        width: 256,
+                        height: 256,
+                        correctLevel: window.QRCode.CorrectLevel.H
+                    });
+                } else {
+                    setTimeout(generateQRCode, 100);
+                }
+            };
+            generateQRCode();
         }
     }, [modalOpen, pixData]);
 
@@ -131,10 +111,18 @@ export const ParadisePagProvider = ({ children }) => {
         setModalOpen(false);
         setPixData(null);
         setCheckoutData(null);
+        setShowConfirmButton(false);
+    }
+
+    const handleConfirmPayment = () => {
+      closeModal();
+      if (onPaymentConfirm) {
+        onPaymentConfirm();
+      }
     }
 
     return (
-        <ParadisePagContext.Provider value={{ createCheckout }}>
+        <ParadisePagContext.Provider value={{ createCheckout, isLoading }}>
             {children}
             {modalOpen && pixData && checkoutData && (
                  <div style={{
@@ -183,6 +171,19 @@ export const ParadisePagProvider = ({ children }) => {
                         }}>
                             {CHECKOUT_CONFIG.pixModalCopyButtonText}
                         </button>
+                        
+                        {showConfirmButton && (
+                          <button onClick={handleConfirmPayment} style={{
+                              width: '100%', padding: '0.75rem', border: 'none',
+                              backgroundColor: '#f59e0b', // A different color for confirmation
+                              color: CHECKOUT_CONFIG.pixModalButtonTextColor,
+                              borderRadius: '4px', cursor: 'pointer',
+                              fontSize: '1rem', fontWeight: 'bold', marginBottom: '1rem'
+                          }}>
+                              Confirmar Pagamento
+                          </button>
+                        )}
+                        
                         <p style={{
                             fontSize: '0.9rem', color: CHECKOUT_CONFIG.pixModalSecurePaymentTextColor,
                             fontWeight: 'bold'

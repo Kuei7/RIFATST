@@ -1,0 +1,191 @@
+"use client";
+
+import { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import confetti from 'canvas-confetti';
+import { useRouter } from 'next/navigation';
+
+// Reordered to match the visual layout of the wheel
+const prizes = [
+    { text: 'R$ 300', type: 'win' },    // blue
+    { text: 'NADA', type: 'lose' },     // white
+    { text: 'R$ 100', type: 'win' },    // blue
+    { text: 'NADA', type: 'lose' },     // white
+    { text: '50% OFF', type: 'win' },   // blue
+    { text: 'NADA', type: 'lose' },     // white
+    { text: '60% OFF', type: 'win' },   // blue - TARGET
+    { text: 'NADA', type: 'lose' },     // white
+];
+const segmentAngle = 360 / prizes.length;
+
+export function PrizeWheel() {
+  const router = useRouter();
+  const [rotation, setRotation] = useState(0);
+  const [isSpinning, setIsSpinning] = useState(false);
+  const [showResult, setShowResult] = useState(false);
+  const [selectedPrize, setSelectedPrize] = useState({ text: '', type: '' });
+
+  const onSpinComplete = () => {
+    router.push('/');
+  }
+
+  const triggerConfetti = () => {
+    let params = {
+  		particleCount: 500,
+  		spread: 90,
+  		startVelocity: 70,
+  		origin: { x: 0, y: 0.5 },
+  		angle: 45,
+        zIndex: 9999
+  	};
+
+  	// Joga confetes da esquerda pra direita
+  	confetti(params);
+
+  	// Joga confetes da direita para a esquerda
+  	params.origin.x = 1;
+  	params.angle = 135;
+  	confetti(params);
+  };
+
+  const spinWheel = () => {
+    if (isSpinning) return;
+
+    setIsSpinning(true);
+    setShowResult(false);
+    
+    const totalSpins = 5;
+    
+    // The index for "60% OFF" is now 6 after reordering
+    const targetPrizeIndex = 6; 
+    
+    // Calculate the exact center angle for the target prize segment
+    const targetSegmentCenterAngle = (targetPrizeIndex * segmentAngle) + (segmentAngle / 2);
+
+    // The final rotation should align the pointer (at 270 degrees or -90) with the target angle.
+    const stopAngle = 270 - targetSegmentCenterAngle;
+
+    // Add a small random offset within the segment to make it look more natural
+    const randomOffset = (Math.random() - 0.5) * (segmentAngle * 0.4);
+
+    const newRotation = (totalSpins * 360) + stopAngle - randomOffset;
+    
+    setRotation(newRotation);
+
+    // Spin animation time
+    const spinDuration = 4000;
+
+    setTimeout(() => {
+      setIsSpinning(false);
+      
+      const winningPrize = prizes[targetPrizeIndex];
+
+      setSelectedPrize({ text: winningPrize.text, type: winningPrize.type });
+      setShowResult(true);
+
+      if (winningPrize.text === '60% OFF') {
+        triggerConfetti();
+      }
+
+    }, spinDuration);
+  };
+
+  useEffect(() => {
+    if (showResult && selectedPrize.type === 'win' && selectedPrize.text === '60% OFF') {
+      triggerConfetti();
+    }
+  }, [showResult, selectedPrize]);
+  
+  return (
+    <div className="bg-card text-card-foreground p-6 rounded-lg shadow-lg flex flex-col items-center">
+      <h2 className="text-2xl font-bold font-headline mb-6 text-gray-800">Gire e Ganhe Prêmios!</h2>
+      <div className="relative w-80 h-80 md:w-96 md:h-96 flex items-center justify-center mb-6">
+        
+        {/* Pointer */}
+        <div 
+          className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-4 w-0 h-0 z-20"
+          style={{
+            borderLeft: '12px solid transparent',
+            borderRight: '12px solid transparent',
+            borderTop: '20px solid #ca8a04', // golden color
+          }}
+        >
+          <div className="absolute -top-5 -left-1.5 w-3 h-3 bg-yellow-300 rounded-full"></div>
+        </div>
+
+        {/* Wheel */}
+        <div 
+          className="relative w-full h-full rounded-full border-8 border-blue-500 overflow-hidden shadow-2xl"
+          style={{ transition: 'transform 4s cubic-bezier(0.25, 0.1, 0.25, 1)', transform: `rotate(${rotation}deg)` }}
+        >
+          <svg viewBox="0 0 200 200" className="absolute w-full h-full">
+            {prizes.map((prize, index) => {
+              const startAngle = segmentAngle * index;
+              
+              const isBlue = index % 2 === 0;
+              const pathD = `M100,100 L${100 + 100 * Math.cos(startAngle * Math.PI/180)},${100 + 100 * Math.sin(startAngle*Math.PI/180)} A100,100 0 0,1 ${100 + 100 * Math.cos((startAngle + segmentAngle) * Math.PI/180)},${100 + 100 * Math.sin((startAngle + segmentAngle)*Math.PI/180)} Z`;
+
+              // Text position
+              const textAngle = startAngle + segmentAngle / 2;
+              const textRad = textAngle * Math.PI / 180;
+              const textX = 100 + 65 * Math.cos(textRad);
+              const textY = 100 + 65 * Math.sin(textRad);
+
+              return (
+                <g key={index}>
+                  <path d={pathD} fill={isBlue ? '#4299e1' : '#ffffff'} />
+                   <text
+                    x={textX}
+                    y={textY}
+                    transform={`rotate(${textAngle + 90}, ${textX}, ${textY})`}
+                    textAnchor="middle"
+                    alignmentBaseline="middle"
+                    fill={isBlue ? 'white' : '#333'}
+                    fontSize="10"
+                    fontWeight="bold"
+                  >
+                    {prize.text}
+                  </text>
+                </g>
+              );
+            })}
+          </svg>
+        </div>
+        
+        {/* Center Pin */}
+        <div className="absolute w-16 h-16 bg-gradient-to-tr from-blue-300 to-blue-500 rounded-full z-10 border-4 border-blue-200 shadow-inner flex items-center justify-center">
+           <div className="w-8 h-8 bg-gradient-to-bl from-blue-300 to-blue-500 rounded-full border-2 border-blue-200"></div>
+        </div>
+      </div>
+      
+      <Button 
+        onClick={spinWheel} 
+        disabled={isSpinning || showResult}
+        className="w-full max-w-xs h-12 text-xl font-bold bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg uppercase tracking-wider"
+      >
+        {isSpinning ? 'Girando...' : 'GIRAR'}
+      </Button>
+
+      {showResult && selectedPrize.type === 'win' && (
+        <div className="mt-6 p-4 bg-green-100 border-2 border-green-500 rounded-lg text-center flex flex-col items-center gap-4">
+          <div>
+            <p className="text-green-800 font-bold text-lg">Parabéns! Você ganhou:</p>
+            <p className="text-green-900 font-extrabold text-2xl">{selectedPrize.text}</p>
+          </div>
+          <Button onClick={onSpinComplete} className="bg-green-600 hover:bg-green-700 text-white font-bold uppercase">
+            Resgatar
+          </Button>
+        </div>
+      )}
+       {showResult && selectedPrize.type === 'lose' && (
+        <div className="mt-6 p-4 bg-red-100 border-2 border-red-500 rounded-lg text-center">
+          <p className="text-red-800 font-bold text-lg">Não foi dessa vez!</p>
+          <p className="text-red-900 font-extrabold text-2xl">{selectedPrize.text}</p>
+           <Button onClick={onSpinComplete} className="mt-4 bg-gray-500 hover:bg-gray-600 text-white font-bold uppercase">
+            Voltar
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+}

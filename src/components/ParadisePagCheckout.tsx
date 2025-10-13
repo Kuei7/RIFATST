@@ -1,3 +1,4 @@
+
 // @ts-nocheck
 "use client";
 import React, { useEffect, useState, useRef, createContext, useContext } from 'react';
@@ -40,7 +41,7 @@ export const ParadisePagProvider = ({ children, onPaymentConfirm }) => {
         try {
             const utms = Object.fromEntries(new URLSearchParams(window.location.search));
             const paymentData = { 
-                customer: {}, 
+                customer: data.customer || {}, 
                 utms: utms,
                 amount: data.amount,
                 offerHash: data.offerHash

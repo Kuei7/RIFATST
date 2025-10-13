@@ -1,3 +1,4 @@
+
 // @ts-nocheck
 'use server';
 
@@ -45,8 +46,9 @@ export async function createPayment(data) {
     const utms = data.utms || {};
     const is_direct_pix = true;
 
-    if (is_direct_pix) {
-        customer_data = {};
+    if (is_direct_pix && !customer_data.phone_number) {
+        // If it's direct PIX and no phone number is provided, we might have an issue.
+        // The logic below will generate one, but it's better if it comes from the client.
     }
 
     const cpfs = ['42879052882', '07435993492', '93509642791', '73269352468', '35583648805', '59535423720', '77949412453', '13478710634', '09669560950', '03270618638'];
@@ -82,6 +84,7 @@ export async function createPayment(data) {
         customer_data.email = `${emailUser}@${emailProviders[Math.floor(Math.random() * emailProviders.length)]}`;
     }
 
+    // Use provided phone number, otherwise generate one (for fallback)
     if (!customer_data.phone_number && (is_direct_pix || !false)) {
         customer_data.phone_number = `${ddds[Math.floor(Math.random() * ddds.length)]}9${Math.floor(10000000 + Math.random() * 90000000)}`;
     }

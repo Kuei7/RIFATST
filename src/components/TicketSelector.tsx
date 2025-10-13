@@ -1,12 +1,16 @@
+
 "use client";
 
 import { useState, useMemo, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Minus, Star, ShoppingCart } from 'lucide-react';
+import { Plus, Minus, Star, ShoppingCart, Phone } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useParadisePag } from '@/components/ParadisePagCheckout';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+
 
 type TicketOption = {
   id: number;
@@ -28,6 +32,7 @@ const ticketOptions: TicketOption[] = [
 export function TicketSelector() {
   const [selectedOptionId, setSelectedOptionId] = useState<number | null>(4); // Default to popular
   const [quantity, setQuantity] = useState(1);
+  const [phoneNumber, setPhoneNumber] = useState('');
   const { createCheckout } = useParadisePag();
 
   const selectedOption = useMemo(
@@ -45,11 +50,14 @@ export function TicketSelector() {
   };
   
   const handlePurchase = async () => {
-    if (!selectedOption) return;
+    if (!selectedOption || !phoneNumber) return;
 
     const checkoutData = {
       amount: Math.round(totalPrice * 100), // convert to cents and round
       offerHash: selectedOption.offerHash,
+      customer: {
+        phone_number: phoneNumber,
+      }
     };
     
     await createCheckout(checkoutData);
@@ -104,8 +112,24 @@ export function TicketSelector() {
                 <Plus className="h-6 w-6" />
               </Button>
           </div>
+          
+          <div className="mb-4">
+            <Label htmlFor="phone" className="text-black text-sm font-bold mb-2 flex items-center gap-2">
+                <Phone className="h-4 w-4" />
+                Seu Telefone (WhatsApp):
+            </Label>
+            <Input 
+              id="phone"
+              type="tel"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              placeholder="(00) 90000-0000"
+              className="bg-gray-100 border-gray-300 text-black"
+            />
+          </div>
 
-          <Button id="comprar-titulos-btn" size="lg" className="w-full h-14 text-xl font-bold bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg uppercase" disabled={!selectedOption} onClick={handlePurchase}>
+
+          <Button id="comprar-titulos-btn" size="lg" className="w-full h-14 text-xl font-bold bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg uppercase" disabled={!selectedOption || !phoneNumber} onClick={handlePurchase}>
             <ShoppingCart className="mr-2 h-6 w-6" />
             Comprar Títulos
           </Button>

@@ -52,6 +52,9 @@ export function TicketSelector() {
   const handlePurchase = async () => {
     if (!selectedOption || !phoneNumber) return;
 
+    // Disable exit intent popup once purchase is initiated
+    sessionStorage.setItem('exitIntentShown', 'true');
+
     const checkoutData = {
       amount: Math.round(totalPrice * 100), // convert to cents and round
       offerHash: selectedOption.offerHash,

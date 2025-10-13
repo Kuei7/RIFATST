@@ -1,8 +1,8 @@
 "use client";
 
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Trophy } from "lucide-react";
+import { Trophy, Ticket } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const prizes = [
@@ -20,32 +20,38 @@ const prizes = [
 export function PrizeList() {
     return (
         <Card className="mt-8 shadow-lg bg-card border-0 rounded-lg text-card-foreground">
-            <CardContent className="p-4 bg-white rounded-lg">
-                <div className="flex flex-col gap-2">
+            <CardHeader className="p-4 bg-white rounded-t-lg">
+                <CardTitle className="text-center font-headline text-2xl font-bold text-gray-800">
+                    COTAS PREMIADAS
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="p-4 bg-white rounded-b-lg">
+                <div className="flex flex-col gap-3">
                     {prizes.map((prize, index) => (
                         <div
                             key={index}
                             className={cn(
-                                "flex items-center justify-between p-3 rounded-md text-sm",
+                                "flex items-center justify-between p-3 rounded-lg text-sm shadow-sm",
                                 prize.status === 'claimed'
                                     ? "bg-primary text-primary-foreground"
                                     : "bg-gray-100 text-gray-800"
                             )}
                         >
                             <Badge variant="secondary" className={cn(
-                                "font-mono text-xs",
+                                "font-mono text-xs flex items-center gap-1.5",
                                 prize.status === 'claimed' ? "bg-blue-700 text-white" : "bg-gray-300 text-gray-700"
                             )}>
+                                <Ticket className="h-3.5 w-3.5" />
                                 {prize.number}
                             </Badge>
-                            <span className="font-bold text-base">{prize.value}</span>
+                            <span className="font-bold text-base tracking-wider">{prize.value}</span>
                             {prize.status === 'claimed' ? (
                                 <div className="flex items-center gap-2">
-                                    <span>{prize.winner}</span>
+                                    <span className="font-medium">{prize.winner}</span>
                                     <Trophy className="h-4 w-4 text-yellow-400" />
                                 </div>
                             ) : (
-                                <span className="font-semibold text-gray-600">Disponível</span>
+                                <span className="font-semibold text-green-600">Disponível</span>
                             )}
                         </div>
                     ))}

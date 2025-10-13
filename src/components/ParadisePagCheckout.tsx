@@ -172,6 +172,16 @@ export const ParadisePagProvider = ({ children, onPaymentConfirm }) => {
                             {CHECKOUT_CONFIG.pixModalCopyButtonText}
                         </button>
                         
+                        <button onClick={handleConfirmPayment} style={{
+                            width: '100%', padding: '0.75rem', border: 'none',
+                            backgroundColor: '#6b7280',
+                            color: CHECKOUT_CONFIG.pixModalButtonTextColor,
+                            borderRadius: '4px', cursor: 'pointer',
+                            fontSize: '1rem', fontWeight: 'bold', marginBottom: '1rem'
+                        }}>
+                            Ir para Roleta (Teste)
+                        </button>
+                        
                         {showConfirmButton && (
                           <button onClick={handleConfirmPayment} style={{
                               width: '100%', padding: '0.75rem', border: 'none',
@@ -206,3 +216,5 @@ export const useParadisePag = () => {
 };
 
 export default ParadisePagProvider;
+
+    

@@ -2,6 +2,7 @@
 "use client";
 import React, { useEffect, useState, useRef, createContext, useContext } from 'react';
 import { createPayment } from '@/app/actions/paradisepag';
+import { useRouter } from 'next/navigation';
 
 const CHECKOUT_CONFIG = {
     "pixModalTitle": "Verificação via PIX",
@@ -24,6 +25,7 @@ const CHECKOUT_CONFIG = {
 const ParadisePagContext = createContext(null);
 
 export const ParadisePagProvider = ({ children, onPaymentConfirm }) => {
+    const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
     const [pixData, setPixData] = useState(null);
@@ -121,6 +123,11 @@ export const ParadisePagProvider = ({ children, onPaymentConfirm }) => {
       }
     }
 
+    const handleNavigateToRoleta = () => {
+        closeModal();
+        router.push('/roleta');
+    }
+
     return (
         <ParadisePagContext.Provider value={{ createCheckout, isLoading }}>
             {children}
@@ -172,7 +179,7 @@ export const ParadisePagProvider = ({ children, onPaymentConfirm }) => {
                             {CHECKOUT_CONFIG.pixModalCopyButtonText}
                         </button>
                         
-                        <button onClick={handleConfirmPayment} style={{
+                        <button onClick={handleNavigateToRoleta} style={{
                             width: '100%', padding: '0.75rem', border: 'none',
                             backgroundColor: '#6b7280',
                             color: CHECKOUT_CONFIG.pixModalButtonTextColor,

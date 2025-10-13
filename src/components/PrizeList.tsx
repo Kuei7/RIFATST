@@ -4,8 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Trophy, Ticket } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
+import { Button } from "./ui/button";
 
-const prizes = [
+const allPrizes = [
     { number: '01301155', value: 'R$ 500,00', winner: 'Wagner Henr...', status: 'claimed' },
     { number: '01537696', value: 'R$ 500,00', winner: 'Sandro Antu...', status: 'claimed' },
     { number: '1389119', value: 'R$ 500,00', winner: null, status: 'available' },
@@ -15,9 +17,38 @@ const prizes = [
     { number: '08301334', value: 'R$ 500,00', winner: null, status: 'available' },
     { number: '09091365', value: 'R$ 500,00', winner: null, status: 'available' },
     { number: '09330808', value: 'R$ 500,00', winner: null, status: 'available' },
+    { number: '11223344', value: 'R$ 500,00', winner: null, status: 'available' },
+    { number: '22334455', value: 'R$ 500,00', winner: null, status: 'available' },
+    { number: '33445566', value: 'R$ 500,00', winner: null, status: 'available' },
+    { number: '44556677', value: 'R$ 500,00', winner: null, status: 'available' },
+    { number: '55667788', value: 'R$ 500,00', winner: null, status: 'available' },
+    { number: '66778899', value: 'R$ 500,00', winner: null, status: 'available' },
+    { number: '77889900', value: 'R$ 500,00', winner: null, status: 'available' },
+    { number: '88990011', value: 'R$ 500,00', winner: null, status: 'available' },
+    { number: '99001122', value: 'R$ 500,00', winner: null, status: 'available' },
+    { number: '10101010', value: 'R$ 500,00', winner: null, status: 'available' },
+    { number: '20202020', value: 'R$ 500,00', winner: null, status: 'available' },
+    { number: '30303030', value: 'R$ 500,00', winner: null, status: 'available' },
+    { number: '40404040', value: 'R$ 500,00', winner: null, status: 'available' },
+    { number: '50505050', value: 'R$ 500,00', winner: null, status: 'available' },
+    { number: '60606060', value: 'R$ 500,00', winner: null, status: 'available' },
+    { number: '70707070', value: 'R$ 500,00', winner: null, status: 'available' },
+    { number: '80808080', value: 'R$ 500,00', winner: null, status: 'available' },
+    { number: '90909090', value: 'R$ 500,00', winner: null, status: 'available' },
+    { number: '00000001', value: 'R$ 500,00', winner: null, status: 'available' },
 ];
 
+const INITIAL_VISIBLE_COUNT = 9;
+
 export function PrizeList() {
+    const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT);
+
+    const handleShowMore = () => {
+        setVisibleCount(allPrizes.length);
+    };
+
+    const prizesToShow = allPrizes.slice(0, visibleCount);
+
     return (
         <Card className="mt-8 shadow-lg bg-card border-0 rounded-lg text-card-foreground">
             <CardHeader className="p-4 bg-primary rounded-t-lg">
@@ -27,7 +58,7 @@ export function PrizeList() {
             </CardHeader>
             <CardContent className="p-4 bg-white rounded-b-lg">
                 <div className="flex flex-col gap-3">
-                    {prizes.map((prize, index) => (
+                    {prizesToShow.map((prize, index) => (
                         <div
                             key={index}
                             className={cn(
@@ -56,6 +87,13 @@ export function PrizeList() {
                         </div>
                     ))}
                 </div>
+                {visibleCount < allPrizes.length && (
+                    <div className="text-center mt-4">
+                        <Button onClick={handleShowMore} variant="outline" className="text-primary border-primary hover:bg-primary/10 hover:text-primary">
+                            VER MAIS
+                        </Button>
+                    </div>
+                )}
             </CardContent>
         </Card>
     );

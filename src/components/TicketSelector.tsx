@@ -126,6 +126,7 @@ export function TicketSelector() {
               placeholder="(00) 90000-0000"
               className="bg-gray-100 border-gray-300 text-black"
             />
+            <p className="text-xs text-gray-500 mt-1">Será utilizado para entrarmos em contato caso você ganhe.</p>
           </div>
 
 

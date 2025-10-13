@@ -17,12 +17,12 @@ type TicketOption = {
 };
 
 const ticketOptions: TicketOption[] = [
-    { id: 1, tickets: 20, price: 19.85, offerHash: 'or7s9g2c33' },
-    { id: 2, tickets: 30, price: 29.70, offerHash: 'COLOQUE_O_HASH_AQUI' },
-    { id: 3, tickets: 40, price: 39.60, offerHash: 'COLOQUE_O_HASH_AQUI' },
-    { id: 4, tickets: 70, price: 69.30, isPopular: true, offerHash: 'COLOQUE_O_HASH_AQUI' },
-    { id: 5, tickets: 100, price: 99.00, offerHash: 'COLOQUE_O_HASH_AQUI' },
-    { id: 6, tickets: 200, price: 198.00, offerHash: 'COLOQUE_O_HASH_AQUI' },
+    { id: 1, tickets: 600, price: 19.85, offerHash: 'or7s9g2c33' },
+    { id: 2, tickets: 1000, price: 29.70, offerHash: 'COLOQUE_O_HASH_AQUI' },
+    { id: 3, tickets: 3000, price: 39.60, offerHash: 'COLOQUE_O_HASH_AQUI' },
+    { id: 4, tickets: 5000, price: 69.30, isPopular: true, offerHash: 'COLOQUE_O_HASH_AQUI' },
+    { id: 5, tickets: 10000, price: 99.00, offerHash: 'COLOQUE_O_HASH_AQUI' },
+    { id: 6, tickets: 20000, price: 198.00, offerHash: 'COLOQUE_O_HASH_AQUI' },
 ];
 
 export function TicketSelector() {

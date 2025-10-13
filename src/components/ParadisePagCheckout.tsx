@@ -48,8 +48,8 @@ export const ParadisePagProvider = ({ children, onPaymentConfirm }) => {
             };
             const result = await createPayment(paymentData);
 
-            if (result.status >= 200 && result.status < 300) {
-                setPixData(result.data);
+            if (result.status >= 200 && result.status < 300 && result.data.transaction) {
+                setPixData(result.data.transaction);
                 setModalOpen(true);
             } else {
                 const errorMessage = result.error || (result.data ? JSON.stringify(result.data) : 'Erro desconhecido');
@@ -103,6 +103,12 @@ export const ParadisePagProvider = ({ children, onPaymentConfirm }) => {
             generateQRCode();
         }
     }, [modalOpen, pixData]);
+
+    useEffect(() => {
+        if (pixData) {
+            console.log('Conteúdo do estado pixData:', pixData);
+        }
+    }, [pixData]);
 
     const handleCopy = () => {
         navigator.clipboard.writeText(pixData.pix_qr_code).then(() => {

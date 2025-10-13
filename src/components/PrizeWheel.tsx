@@ -26,7 +26,7 @@ export function PrizeWheel() {
   const [selectedPrize, setSelectedPrize] = useState({ text: '', type: '' });
 
   const onSpinComplete = () => {
-    router.push('/');
+    router.push('/oferta');
   }
 
   const triggerConfetti = () => {

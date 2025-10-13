@@ -5,6 +5,7 @@ import { TicketSelector } from '@/components/TicketSelector';
 import { BeneficiaryInstitution } from '@/components/BeneficiaryInstitution';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { VivaPrivilegios } from '@/components/VivaPrivilegios';
+import { PrizeList } from '@/components/PrizeList';
 
 export default function OfertaPage() {
   const bannerImage = PlaceHolderImages.find(p => p.id === 'vivasorte-banner');
@@ -39,6 +40,7 @@ export default function OfertaPage() {
             <div className="container mx-auto px-4 py-4 md:py-8">
               <div className="max-w-2xl mx-auto">
                 <TicketSelector />
+                <PrizeList />
                 <BeneficiaryInstitution />
                 <VivaPrivilegios />
               </div>

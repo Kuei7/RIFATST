@@ -12,6 +12,7 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { VivaPrivilegios } from '@/components/VivaPrivilegios';
 import { ParadisePagProvider, useParadisePag } from '@/components/ParadisePagCheckout';
 import { PrizeWheel } from '@/components/PrizeWheel';
+import { PrizeList } from '@/components/PrizeList';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 
 function MainContent() {
@@ -59,6 +60,7 @@ function MainContent() {
           <div className="container mx-auto px-4 py-4 md:py-8">
             <div className="max-w-2xl mx-auto">
               <TicketSelector onPurchase={handlePurchaseRequest} />
+              <PrizeList />
               <BeneficiaryInstitution />
               <VivaPrivilegios />
             </div>

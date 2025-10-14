@@ -132,6 +132,12 @@ export function TicketSelector() {
             <p className="text-xs text-gray-500 mt-1">Será utilizado para entrarmos em contato caso você ganhe.</p>
           </div>
 
+          <div className="text-center text-black mb-4">
+            <p className="text-sm">Valor total:</p>
+            <p className="font-bold text-3xl">
+                {totalPrice.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+            </p>
+          </div>
 
           <Button id="comprar-titulos-btn" size="lg" className="w-full h-14 text-xl font-bold bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg uppercase" disabled={!selectedOption || !phoneNumber} onClick={handlePurchase}>
             <ShoppingCart className="mr-2 h-6 w-6" />

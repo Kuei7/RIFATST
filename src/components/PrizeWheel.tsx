@@ -5,8 +5,9 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import confetti from 'canvas-confetti';
 import { useRouter } from 'next/navigation';
-import { Gift, Clock } from 'lucide-react';
+import { Clock } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 // Reordered to match the visual layout of the wheel
 const prizes = [
@@ -187,7 +188,7 @@ export function PrizeWheel() {
           "relative w-full mt-6 p-6 bg-gradient-to-br from-blue-500 to-blue-700 border-4 border-yellow-400 rounded-2xl text-white text-center flex flex-col items-center gap-4 shadow-2xl",
           "animate-pulse-bright"
         )}>
-          <Gift className="h-16 w-16 text-yellow-400" />
+          <Image src="https://s3.typebot.io/public/workspaces/cm8gbxl5b000ba3ncy4y16grd/typebots/cmgf6qv060007i604f4na2kac/blocks/ft6w3wvq95uaarwaoxd0vrib?v=1760406740573" alt="Caixa de Presente" width={100} height={100} />
           <p className="font-bold text-2xl">Parabéns! Você ganhou:</p>
           <p className="font-black text-5xl tracking-tighter text-yellow-300 drop-shadow-lg">{selectedPrize.text}</p>
           <div className="flex items-center gap-2 mt-2 bg-black/20 px-3 py-1.5 rounded-full text-sm">

@@ -185,7 +185,7 @@ export function PrizeWheel() {
 
       {showResult && selectedPrize.type === 'win' && (
         <div className={cn(
-          "relative w-full mt-6 p-6 bg-gradient-to-br from-blue-500 to-blue-700 border-4 border-yellow-400 rounded-2xl text-white text-center flex flex-col items-center gap-4 shadow-2xl",
+          "relative w-full mt-6 p-6 bg-gradient-to-br from-primary to-blue-800 rounded-2xl text-white text-center flex flex-col items-center gap-4 shadow-2xl",
           "animate-pulse-bright"
         )}>
           <Image src="https://s3.typebot.io/public/workspaces/cm8gbxl5b000ba3ncy4y16grd/typebots/cmgf6qv060007i604f4na2kac/blocks/ft6w3wvq95uaarwaoxd0vrib?v=1760406740573" alt="Caixa de Presente" width={100} height={100} />
@@ -212,3 +212,5 @@ export function PrizeWheel() {
     </div>
   );
 }
+
+    

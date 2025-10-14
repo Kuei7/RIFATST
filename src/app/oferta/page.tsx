@@ -13,7 +13,8 @@ export default function OfertaPage() {
 
   return (
     <>
-      <div className="flex flex-col min-h-screen bg-background">
+      <OfferCountdown />
+      <div className="flex flex-col min-h-screen bg-background pt-12">
         <Header />
         <main className="flex-grow">
           <div className="bg-primary py-4 md:py-6">
@@ -51,7 +52,6 @@ export default function OfertaPage() {
         </main>
         <Footer />
       </div>
-      <OfferCountdown />
     </>
   );
 }

@@ -23,18 +23,18 @@ export function OfferCountdown() {
   };
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
-      <div className="bg-red-600 text-white p-4 rounded-lg shadow-2xl flex items-center gap-3 animate-pulse">
-        <AlertCircle className="h-8 w-8" />
-        <div className="text-left">
-          {timeLeft > 0 ? (
-            <>
-              <p className="font-bold text-lg">Oferta especial termina em:</p>
-              <p className="font-mono text-2xl font-black tracking-wider">{formatTime(timeLeft)}</p>
-            </>
-          ) : (
-            <p className="font-black text-2xl uppercase">Últimos Segundos!</p>
-          )}
+    <div className="fixed top-0 left-0 w-full z-50">
+      <div className="bg-red-600 text-white p-2 text-center shadow-lg flex items-center justify-center gap-4 animate-pulse">
+        <AlertCircle className="h-6 w-6" />
+        <div className='flex items-center gap-2'>
+            {timeLeft > 0 ? (
+                <>
+                <p className="font-bold text-sm md:text-base">Oferta especial termina em:</p>
+                <p className="font-mono text-base md:text-lg font-black tracking-wider">{formatTime(timeLeft)}</p>
+                </>
+            ) : (
+                <p className="font-black text-base md:text-lg uppercase">Últimos Segundos!</p>
+            )}
         </div>
       </div>
     </div>

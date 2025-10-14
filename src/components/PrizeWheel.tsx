@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import confetti from 'canvas-confetti';
 import { useRouter } from 'next/navigation';
 import { Gift, Clock } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 // Reordered to match the visual layout of the wheel
 const prizes = [
@@ -182,8 +183,11 @@ export function PrizeWheel() {
       )}
 
       {showResult && selectedPrize.type === 'win' && (
-        <div className="w-full mt-6 p-6 bg-gradient-to-br from-blue-500 to-blue-700 border-4 border-yellow-400 rounded-2xl text-white text-center flex flex-col items-center gap-4 shadow-2xl">
-          <Gift className="h-16 w-16 text-yellow-400 animate-pulse" />
+        <div className={cn(
+          "relative w-full mt-6 p-6 bg-gradient-to-br from-blue-500 to-blue-700 border-4 border-yellow-400 rounded-2xl text-white text-center flex flex-col items-center gap-4 shadow-2xl",
+          "animate-pulse-bright"
+        )}>
+          <Gift className="h-16 w-16 text-yellow-400" />
           <p className="font-bold text-2xl">Parabéns! Você ganhou:</p>
           <p className="font-black text-5xl tracking-tighter text-yellow-300 drop-shadow-lg">{selectedPrize.text}</p>
           <div className="flex items-center gap-2 mt-2 bg-black/20 px-3 py-1.5 rounded-full text-sm">
@@ -207,5 +211,3 @@ export function PrizeWheel() {
     </div>
   );
 }
-
-    

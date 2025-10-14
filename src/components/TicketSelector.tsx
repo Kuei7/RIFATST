@@ -27,7 +27,10 @@ const ticketOptions: TicketOption[] = [
     { id: 4, tickets: 5000, price: 69.30, isPopular: true, offerHash: 'COLOQUE_O_HASH_AQUI' },
     { id: 5, tickets: 10000, price: 99.00, offerHash: 'COLOQUE_O_HASH_AQUI' },
     { id: 6, tickets: 20000, price: 198.00, offerHash: 'COLOQUE_O_HASH_AQUI' },
+    { id: 7, tickets: 50000, price: 495.00, offerHash: 'COLOQUE_O_HASH_AQUI' },
 ];
+
+const MAX_TICKETS = 50000;
 
 export function TicketSelector() {
   const [selectedOptionId, setSelectedOptionId] = useState<number | null>(4); // Default to popular
@@ -39,6 +42,12 @@ export function TicketSelector() {
     () => ticketOptions.find(opt => opt.id === selectedOptionId),
     [selectedOptionId]
   );
+  
+  const currentTotalTickets = useMemo(() => {
+    if (!selectedOption) return 0;
+    return selectedOption.tickets * quantity;
+  }, [selectedOption, quantity]);
+
 
   const totalPrice = useMemo(() => {
     if (!selectedOption) return 0;
@@ -46,8 +55,24 @@ export function TicketSelector() {
   }, [selectedOption, quantity]);
   
   const handleQuantityChange = (amount: number) => {
-    setQuantity(prev => Math.max(1, prev + amount));
+    setQuantity(prev => {
+        const newQuantity = prev + amount;
+        if (!selectedOption || newQuantity < 1) return 1;
+
+        const newTotalTickets = selectedOption.tickets * newQuantity;
+        if (newTotalTickets > MAX_TICKETS) {
+            // Adjust quantity to not exceed max tickets
+            return Math.floor(MAX_TICKETS / selectedOption.tickets);
+        }
+        return newQuantity;
+    });
   };
+
+  const isMaxTicketsReached = useMemo(() => {
+    if (!selectedOption) return false;
+    // Check if adding one more set of tickets would exceed the limit
+    return selectedOption.tickets * (quantity + 1) > MAX_TICKETS;
+  }, [selectedOption, quantity]);
   
   const handlePurchase = async () => {
     if (!selectedOption || !phoneNumber) return;
@@ -79,7 +104,7 @@ export function TicketSelector() {
               </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-2 mb-4">
+          <div className="grid grid-cols-2 gap-3 mb-4">
             {ticketOptions.map((option) => (
               <button
                 key={option.id}
@@ -109,9 +134,9 @@ export function TicketSelector() {
                 <Minus className="h-6 w-6" />
               </Button>
               <span className="text-xl font-bold text-center text-primary-foreground">
-                {selectedOption ? (selectedOption.tickets * quantity) : 0}
+                {currentTotalTickets}
               </span>
-              <Button variant="ghost" size="icon" onClick={() => handleQuantityChange(1)} className="text-primary-foreground hover:bg-primary/80">
+              <Button variant="ghost" size="icon" onClick={() => handleQuantityChange(1)} disabled={isMaxTicketsReached} className="text-primary-foreground hover:bg-primary/80">
                 <Plus className="h-6 w-6" />
               </Button>
           </div>

@@ -12,7 +12,7 @@ export default function RoletaPage() {
         <div className="text-center mb-8 max-w-lg">
           <h1 className="text-2xl font-bold text-gray-800 font-headline">Parabéns! Seus números da sorte foram gerados.</h1>
           <p className="text-base text-gray-600 mt-2">
-            Agora, aproveite seu giro grátis na Roleta da Sorte! Fique de olho no seu WhatsApp, entraremos em contato por lá caso você seja um dos ganhadores.
+            Agora, aproveite seu giro grátis na Roleta da Sorte! Fique de olho no seu WhatsApp, entraremos em contato por lá caso você seja o ganhador.
           </p>
         </div>
         <PrizeWheel />

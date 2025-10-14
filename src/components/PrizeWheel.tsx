@@ -191,7 +191,7 @@ export function PrizeWheel() {
           <Image src="https://s3.typebot.io/public/workspaces/cm8gbxl5b000ba3ncy4y16grd/typebots/cmgf6qv060007i604f4na2kac/blocks/ft6w3wvq95uaarwaoxd0vrib?v=1760406740573" alt="Caixa de Presente" width={100} height={100} />
           <p className="font-bold text-2xl">Parabéns! Você ganhou:</p>
           <p className="font-black text-5xl tracking-tighter text-yellow-500 drop-shadow-lg">{selectedPrize.text}</p>
-          <div className="flex items-center gap-2 mt-2 bg-gray-100 px-3 py-1.5 rounded-full text-sm text-gray-700">
+          <div className="flex items-center gap-2 mt-2 bg-red-500 text-white px-4 py-2 rounded-full text-base font-bold animate-pulse">
             <Clock className="h-5 w-5" />
             <span>Sua oferta expira em: <strong>{formatTime(timeLeft)}</strong></span>
           </div>

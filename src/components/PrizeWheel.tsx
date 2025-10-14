@@ -1,9 +1,11 @@
+
 "use client";
 
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import confetti from 'canvas-confetti';
 import { useRouter } from 'next/navigation';
+import { Gift, Clock } from 'lucide-react';
 
 // Reordered to match the visual layout of the wheel
 const prizes = [
@@ -24,6 +26,7 @@ export function PrizeWheel() {
   const [isSpinning, setIsSpinning] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const [selectedPrize, setSelectedPrize] = useState({ text: '', type: '' });
+  const [timeLeft, setTimeLeft] = useState(600); // 10 minutes in seconds
 
   const onSpinComplete = () => {
     router.push('/oferta');
@@ -91,13 +94,23 @@ export function PrizeWheel() {
   };
 
   useEffect(() => {
-    if (showResult && selectedPrize.type === 'win' && selectedPrize.text === '60% OFF') {
-      triggerConfetti();
+    if (showResult && selectedPrize.type === 'win') {
+      const timer = setInterval(() => {
+        setTimeLeft(prevTime => (prevTime > 0 ? prevTime - 1 : 0));
+      }, 1000);
+
+      return () => clearInterval(timer);
     }
   }, [showResult, selectedPrize]);
+
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+  };
   
   return (
-    <div className="bg-card text-card-foreground p-6 rounded-lg shadow-lg flex flex-col items-center">
+    <div className="bg-card text-card-foreground p-6 rounded-lg shadow-lg flex flex-col items-center max-w-md w-full">
       <h2 className="text-2xl font-bold font-headline mb-6 text-gray-800">Gire e Ganhe Prêmios!</h2>
       <div className="relative w-80 h-80 md:w-96 md:h-96 flex items-center justify-center mb-6">
         
@@ -158,27 +171,32 @@ export function PrizeWheel() {
         </div>
       </div>
       
-      <Button 
-        onClick={spinWheel} 
-        disabled={isSpinning || showResult}
-        className="w-full max-w-xs h-12 text-xl font-bold bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg uppercase tracking-wider"
-      >
-        {isSpinning ? 'Girando...' : 'GIRAR'}
-      </Button>
+      {!showResult && (
+        <Button 
+          onClick={spinWheel} 
+          disabled={isSpinning}
+          className="w-full max-w-xs h-12 text-xl font-bold bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg uppercase tracking-wider"
+        >
+          {isSpinning ? 'Girando...' : 'GIRAR'}
+        </Button>
+      )}
 
       {showResult && selectedPrize.type === 'win' && (
-        <div className="mt-6 p-4 bg-green-100 border-2 border-green-500 rounded-lg text-center flex flex-col items-center gap-4">
-          <div>
-            <p className="text-green-800 font-bold text-lg">Parabéns! Você ganhou:</p>
-            <p className="text-green-900 font-extrabold text-2xl">{selectedPrize.text}</p>
+        <div className="w-full mt-6 p-6 bg-gradient-to-br from-blue-500 to-blue-700 border-4 border-yellow-400 rounded-2xl text-white text-center flex flex-col items-center gap-4 shadow-2xl">
+          <Gift className="h-16 w-16 text-yellow-400 animate-pulse" />
+          <p className="font-bold text-2xl">Parabéns! Você ganhou:</p>
+          <p className="font-black text-5xl tracking-tighter text-yellow-300 drop-shadow-lg">{selectedPrize.text}</p>
+          <div className="flex items-center gap-2 mt-2 bg-black/20 px-3 py-1.5 rounded-full text-sm">
+            <Clock className="h-5 w-5" />
+            <span>Sua oferta expira em: <strong>{formatTime(timeLeft)}</strong></span>
           </div>
-          <Button onClick={onSpinComplete} className="bg-green-600 hover:bg-green-700 text-white font-bold uppercase">
-            Resgatar
+          <Button onClick={onSpinComplete} disabled={timeLeft === 0} className="mt-4 w-full h-14 bg-accent hover:bg-accent/90 text-accent-foreground font-bold uppercase text-xl shadow-lg">
+            {timeLeft > 0 ? 'Resgatar Agora!' : 'Oferta Expirada'}
           </Button>
         </div>
       )}
        {showResult && selectedPrize.type === 'lose' && (
-        <div className="mt-6 p-4 bg-red-100 border-2 border-red-500 rounded-lg text-center">
+        <div className="mt-6 p-4 bg-red-100 border-2 border-red-500 rounded-lg text-center w-full">
           <p className="text-red-800 font-bold text-lg">Não foi dessa vez!</p>
           <p className="text-red-900 font-extrabold text-2xl">{selectedPrize.text}</p>
            <Button onClick={onSpinComplete} className="mt-4 bg-gray-500 hover:bg-gray-600 text-white font-bold uppercase">
@@ -189,3 +207,5 @@ export function PrizeWheel() {
     </div>
   );
 }
+
+    

@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils';
 import { useParadisePag } from '@/components/ParadisePagCheckout';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Progress } from '@/components/ui/progress';
 
 
 type TicketOption = {
@@ -104,6 +105,12 @@ export function TicketSelector() {
                   <Badge className="bg-primary text-primary-foreground font-bold">R$0,99</Badge>
               </div>
           </div>
+          
+          <div className="mb-4 text-black">
+              <p className="text-center font-bold text-sm mb-2">🔥 89% das cotas vendidas!</p>
+              <Progress value={89} className="h-3 [&>div]:bg-orange-500" />
+          </div>
+
 
           <div className="grid grid-cols-2 gap-3 mb-4">
             {ticketOptions.map((option) => (

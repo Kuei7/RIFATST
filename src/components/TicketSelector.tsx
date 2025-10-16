@@ -136,16 +136,6 @@ export function TicketSelector() {
             ))}
           </div>
 
-          <div className="my-6 p-4 bg-primary/10 border-l-4 border-primary rounded-r-lg text-primary">
-            <div className="flex items-start gap-3">
-              <Gift className="h-8 w-8 mt-1 text-primary shrink-0" />
-              <div>
-                <h3 className="font-bold text-base">Ganhe cotas Gratuitas compartilhando!</h3>
-                <p className="text-sm text-primary/80">Se uma pessoa comprar 100 cotas pelo seu link, você ganha 20 cotas de graça!</p>
-              </div>
-            </div>
-          </div>
-
           <div className="flex items-center justify-between bg-primary rounded-md p-1 mb-4">
               <Button variant="ghost" size="icon" onClick={() => handleQuantityChange(-1)} disabled={quantity <= 1} className="text-primary-foreground hover:bg-primary/80">
                 <Minus className="h-6 w-6" />
@@ -186,6 +176,17 @@ export function TicketSelector() {
             Comprar Títulos
           </Button>
           <p className="text-center text-xs mt-4 text-black">Comprar mais títulos aumenta suas chances de ganhar!</p>
+          
+          <div className="mt-6 p-4 bg-primary/10 border-l-4 border-primary rounded-r-lg text-primary">
+            <div className="flex items-start gap-3">
+              <Gift className="h-8 w-8 mt-1 text-primary shrink-0" />
+              <div>
+                <h3 className="font-bold text-base">Ganhe cotas Gratuitas compartilhando!</h3>
+                <p className="text-sm text-primary/80">Se uma pessoa comprar 100 cotas pelo seu link, você ganha 20 cotas de graça!</p>
+              </div>
+            </div>
+          </div>
+
         </CardContent>
       </Card>
     

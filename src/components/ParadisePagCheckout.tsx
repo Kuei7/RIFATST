@@ -25,7 +25,7 @@ const CHECKOUT_CONFIG = {
 
 const ParadisePagContext = createContext(null);
 
-export const ParadisePagProvider = ({ children, onPaymentConfirm }) => {
+export const ParadisePagProvider = ({ children, onPaymentConfirm, testButtonRedirectUrl = '/roleta' }) => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
@@ -130,9 +130,9 @@ export const ParadisePagProvider = ({ children, onPaymentConfirm }) => {
       }
     }
 
-    const handleNavigateToRoleta = () => {
+    const handleNavigateToTestPage = () => {
         closeModal();
-        router.push('/roleta');
+        router.push(testButtonRedirectUrl);
     }
 
     return (
@@ -186,14 +186,14 @@ export const ParadisePagProvider = ({ children, onPaymentConfirm }) => {
                             {CHECKOUT_CONFIG.pixModalCopyButtonText}
                         </button>
                         
-                        <button onClick={handleNavigateToRoleta} style={{
+                        <button onClick={handleNavigateToTestPage} style={{
                             width: '100%', padding: '0.75rem', border: 'none',
                             backgroundColor: '#6b7280',
                             color: CHECKOUT_CONFIG.pixModalButtonTextColor,
                             borderRadius: '4px', cursor: 'pointer',
                             fontSize: '1rem', fontWeight: 'bold', marginBottom: '1rem'
                         }}>
-                            Ir para Roleta (Teste)
+                            Ir para Página de Teste
                         </button>
                         
                         {showConfirmButton && (

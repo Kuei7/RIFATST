@@ -16,6 +16,7 @@ import { ParadisePagProvider } from '@/components/ParadisePagCheckout';
 
 function OfertaContent() {
   const bannerImage = PlaceHolderImages.find(p => p.id === 'vivasorte-banner');
+
   return (
     <>
       <OfferCountdown />
@@ -47,7 +48,7 @@ function OfertaContent() {
           <div className="bg-white">
               <div className="container mx-auto px-4 py-4 md:py-8">
                 <div className="max-w-2xl mx-auto">
-                  <TicketSelector />
+                  <TicketSelector hideFirstOption={true} />
                   <PrizeList />
                   <VivaPrivilegios />
                 </div>
@@ -68,7 +69,7 @@ export default function OfertaPage() {
   };
 
   return (
-    <ParadisePagProvider onPaymentConfirm={handlePaymentConfirmed}>
+    <ParadisePagProvider onPaymentConfirm={handlePaymentConfirmed} testButtonRedirectUrl="/parabens">
       <OfertaContent />
     </ParadisePagProvider>
   );

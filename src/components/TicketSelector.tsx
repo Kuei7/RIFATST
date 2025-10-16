@@ -244,7 +244,7 @@ export function TicketSelector() {
                 <AlertDialogContent className="bg-white text-gray-900">
                     <AlertDialogHeader>
                     <AlertDialogTitle className="text-primary">Compartilhe e Ganhe!</AlertDialogTitle>
-                    <AlertDialogDescription>
+                    <AlertDialogDescription className="text-gray-900">
                         {generatedLink ? 'Seu link de compartilhamento está pronto!' : 'Insira seu telefone para gerar seu link de compartilhamento e começar a ganhar cotas extras!'}
                     </AlertDialogDescription>
                     </AlertDialogHeader>

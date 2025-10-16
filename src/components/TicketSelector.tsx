@@ -32,7 +32,7 @@ type TicketOption = {
   isPopular?: boolean;
 };
 
-const ticketOptions: TicketOption[] = [
+const allTicketOptions: TicketOption[] = [
     { id: 1, tickets: 300, price: 9.90, offerHash: 'COLOQUE_O_HASH_AQUI' },
     { id: 2, tickets: 600, price: 19.85, offerHash: 'or7s9g2c33' },
     { id: 3, tickets: 1000, price: 29.70, offerHash: 'COLOQUE_O_HASH_AQUI' },
@@ -64,7 +64,7 @@ const formatPhoneNumber = (value: string) => {
 };
 
 
-export function TicketSelector() {
+export function TicketSelector({ showShareBox = false }: { showShareBox?: boolean }) {
   const [selectedOptionId, setSelectedOptionId] = useState<number | null>(5); // Default to popular
   const [quantity, setQuantity] = useState(1);
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -74,10 +74,12 @@ export function TicketSelector() {
   const [sharePhoneNumber, setSharePhoneNumber] = useState('');
   const [generatedLink, setGeneratedLink] = useState('');
   const { toast } = useToast();
+  
+  const ticketOptions = allTicketOptions;
 
   const selectedOption = useMemo(
     () => ticketOptions.find(opt => opt.id === selectedOptionId),
-    [selectedOptionId]
+    [selectedOptionId, ticketOptions]
   );
   
   const totalPrice = useMemo(() => {
@@ -163,95 +165,99 @@ export function TicketSelector() {
             }
         }
     }
-  }, [selectedOptionId, selectedOption]);
+  }, [selectedOptionId, selectedOption, ticketOptions]);
 
 
   return (
     
       <Card className="shadow-lg bg-card border-0 rounded-lg text-card-foreground">
         <CardContent className="p-4 bg-white">
-          <div className="text-center mb-4">
-              <div className="text-sm text-black flex items-center justify-center gap-2">
-                  Sorteio 
-                  <Badge className="bg-orange-500 text-white font-bold">31/10</Badge> 
-                  por apenas 
-                  <Badge className="bg-primary text-primary-foreground font-bold">R$0,03</Badge>
-              </div>
-          </div>
+            {!showShareBox && (
+                <>
+                    <div className="text-center mb-4">
+                        <div className="text-sm text-black flex items-center justify-center gap-2">
+                            Sorteio 
+                            <Badge className="bg-orange-500 text-white font-bold">31/10</Badge> 
+                            por apenas 
+                            <Badge className="bg-primary text-primary-foreground font-bold">R$0,03</Badge>
+                        </div>
+                    </div>
+                    
+                    <div className="mb-4 text-black">
+                        <p className="text-center font-bold text-sm mb-2">🔥 89% das cotas vendidas!</p>
+                        <Progress value={89} className="h-3 [&>div]:bg-orange-500" />
+                    </div>
+
+
+                    <div className="grid grid-cols-2 gap-3 mb-4">
+                        {ticketOptions.map((option) => (
+                        <button
+                            key={option.id}
+                            onClick={() => {
+                            setSelectedOptionId(option.id);
+                            }}
+                            className={cn(
+                            "relative text-center p-3 rounded-md border-2 transition-all duration-200 transform hover:scale-105 text-white",
+                            selectedOptionId === option.id
+                                ? 'border-accent bg-accent'
+                                : 'bg-primary border-primary'
+                            )}
+                        >
+                            {option.isPopular && (
+                            <Star className="absolute top-1 right-1 h-4 w-4 text-yellow-400 fill-yellow-400" />
+                            )}
+                            <p className="font-headline font-black text-2xl">+{option.tickets}</p>
+                            <p className="text-xs">R${option.price.toFixed(2).replace('.', ',')}</p>
+                            <p className="font-bold text-xs mt-1">SELECIONAR</p>
+                        </button>
+                        ))}
+                    </div>
+
+                    <div className="flex items-center justify-between bg-primary rounded-md p-1 mb-4">
+                        <Button variant="ghost" size="icon" onClick={() => handleQuantityChange(-1)} disabled={quantity <= 1} className="text-primary-foreground hover:bg-primary/80">
+                            <Minus className="h-6 w-6" />
+                        </Button>
+                        <span className="text-xl font-bold text-center text-primary-foreground">
+                            {currentTotalTickets}
+                        </span>
+                        <Button variant="ghost" size="icon" onClick={() => handleQuantityChange(1)} disabled={isMaxPriceReached} className="text-primary-foreground hover:bg-primary/80">
+                            <Plus className="h-6 w-6" />
+                        </Button>
+                    </div>
+                    
+                    <div className="mb-4">
+                        <Label htmlFor="phone" className="text-black text-sm font-bold mb-2 flex items-center gap-2">
+                            <Phone className="h-4 w-4" />
+                            Seu Telefone (WhatsApp):
+                        </Label>
+                        <Input 
+                        id="phone"
+                        type="tel"
+                        value={phoneNumber}
+                        onChange={(e) => setPhoneNumber(formatPhoneNumber(e.target.value))}
+                        placeholder="(00) 90000-0000"
+                        className="bg-gray-100 border-gray-300 text-black"
+                        maxLength={15}
+                        />
+                        <p className="text-xs text-gray-500 mt-1">Será utilizado para entrarmos em contato caso você ganhe.</p>
+                    </div>
+
+                    <div className="text-center text-black mb-4">
+                        <p className="text-sm">Valor total:</p>
+                        <p className="font-bold text-3xl">
+                            {totalPrice.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                        </p>
+                    </div>
+
+                    <Button id="comprar-titulos-btn" size="lg" className="w-full h-14 text-xl font-bold bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg uppercase" disabled={!selectedOption || !phoneNumber} onClick={handlePurchase}>
+                        <ShoppingCart className="mr-2 h-6 w-6" />
+                        Comprar Títulos
+                    </Button>
+                    <p className="text-center text-xs mt-4 text-black">Comprar mais títulos aumenta suas chances de ganhar!</p>
+                </>
+            )}
           
-          <div className="mb-4 text-black">
-              <p className="text-center font-bold text-sm mb-2">🔥 89% das cotas vendidas!</p>
-              <Progress value={89} className="h-3 [&>div]:bg-orange-500" />
-          </div>
-
-
-          <div className="grid grid-cols-2 gap-3 mb-4">
-            {ticketOptions.map((option) => (
-              <button
-                key={option.id}
-                onClick={() => {
-                  setSelectedOptionId(option.id);
-                }}
-                className={cn(
-                  "relative text-center p-3 rounded-md border-2 transition-all duration-200 transform hover:scale-105 text-white",
-                  selectedOptionId === option.id
-                    ? 'border-accent bg-accent'
-                    : 'bg-primary border-primary'
-                )}
-              >
-                {option.isPopular && (
-                  <Star className="absolute top-1 right-1 h-4 w-4 text-yellow-400 fill-yellow-400" />
-                )}
-                <p className="font-headline font-black text-2xl">+{option.tickets}</p>
-                <p className="text-xs">R${option.price.toFixed(2).replace('.', ',')}</p>
-                <p className="font-bold text-xs mt-1">SELECIONAR</p>
-              </button>
-            ))}
-          </div>
-
-          <div className="flex items-center justify-between bg-primary rounded-md p-1 mb-4">
-              <Button variant="ghost" size="icon" onClick={() => handleQuantityChange(-1)} disabled={quantity <= 1} className="text-primary-foreground hover:bg-primary/80">
-                <Minus className="h-6 w-6" />
-              </Button>
-              <span className="text-xl font-bold text-center text-primary-foreground">
-                {currentTotalTickets}
-              </span>
-              <Button variant="ghost" size="icon" onClick={() => handleQuantityChange(1)} disabled={isMaxPriceReached} className="text-primary-foreground hover:bg-primary/80">
-                <Plus className="h-6 w-6" />
-              </Button>
-          </div>
-          
-          <div className="mb-4">
-            <Label htmlFor="phone" className="text-black text-sm font-bold mb-2 flex items-center gap-2">
-                <Phone className="h-4 w-4" />
-                Seu Telefone (WhatsApp):
-            </Label>
-            <Input 
-              id="phone"
-              type="tel"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(formatPhoneNumber(e.target.value))}
-              placeholder="(00) 90000-0000"
-              className="bg-gray-100 border-gray-300 text-black"
-              maxLength={15}
-            />
-            <p className="text-xs text-gray-500 mt-1">Será utilizado para entrarmos em contato caso você ganhe.</p>
-          </div>
-
-          <div className="text-center text-black mb-4">
-            <p className="text-sm">Valor total:</p>
-            <p className="font-bold text-3xl">
-                {totalPrice.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-            </p>
-          </div>
-
-          <Button id="comprar-titulos-btn" size="lg" className="w-full h-14 text-xl font-bold bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg uppercase" disabled={!selectedOption || !phoneNumber} onClick={handlePurchase}>
-            <ShoppingCart className="mr-2 h-6 w-6" />
-            Comprar Títulos
-          </Button>
-          <p className="text-center text-xs mt-4 text-black">Comprar mais títulos aumenta suas chances de ganhar!</p>
-          
-          <div className="mt-6 p-4 bg-primary/10 border-l-4 border-primary rounded-r-lg text-primary">
+          <div className={cn("mt-6 p-4 bg-primary/10 border-l-4 border-primary rounded-r-lg text-primary", !showShareBox && "mt-6")}>
             <div className="flex items-start gap-3">
               <Gift className="h-8 w-8 mt-1 text-primary shrink-0" />
               <div>

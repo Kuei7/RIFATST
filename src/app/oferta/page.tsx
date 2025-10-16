@@ -1,4 +1,9 @@
+
+"use client";
+
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { TicketSelector } from '@/components/TicketSelector';
@@ -6,10 +11,11 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { VivaPrivilegios } from '@/components/VivaPrivilegios';
 import { PrizeList } from '@/components/PrizeList';
 import { OfferCountdown } from '@/components/OfferCountdown';
+import { ParadisePagProvider } from '@/components/ParadisePagCheckout';
 
-export default function OfertaPage() {
+
+function OfertaContent() {
   const bannerImage = PlaceHolderImages.find(p => p.id === 'vivasorte-banner');
-
   return (
     <>
       <OfferCountdown />
@@ -51,5 +57,19 @@ export default function OfertaPage() {
         <Footer />
       </div>
     </>
+  )
+}
+
+
+export default function OfertaPage() {
+  const router = useRouter();
+  const handlePaymentConfirmed = () => {
+    router.push('/parabens');
+  };
+
+  return (
+    <ParadisePagProvider onPaymentConfirm={handlePaymentConfirmed}>
+      <OfertaContent />
+    </ParadisePagProvider>
   );
 }

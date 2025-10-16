@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from 'next/image';
@@ -63,7 +64,7 @@ function MainContent() {
 export default function Home() {
   const router = useRouter();
   const handlePaymentConfirmed = () => {
-    router.push('/roleta');
+    router.push('/parabens');
   };
 
   return (

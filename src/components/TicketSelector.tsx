@@ -44,6 +44,25 @@ const ticketOptions: TicketOption[] = [
 
 const MAX_TICKETS = 50000;
 
+const formatPhoneNumber = (value: string) => {
+  if (!value) return "";
+  value = value.replace(/\D/g, '');
+  if (value.length > 11) {
+    value = value.substring(0, 11);
+  }
+  if (value.length > 10) {
+    value = value.replace(/^(\d{2})(\d{5})(\d{4}).*/, '($1) $2-$3');
+  } else if (value.length > 5) {
+    value = value.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, '($1) $2-$3');
+  } else if (value.length > 2) {
+    value = value.replace(/^(\d{2})(\d{0,5}).*/, '($1) $2');
+  } else {
+    value = value.replace(/^(\d*)/, '($1');
+  }
+  return value;
+};
+
+
 export function TicketSelector() {
   const [selectedOptionId, setSelectedOptionId] = useState<number | null>(5); // Default to popular
   const [quantity, setQuantity] = useState(1);
@@ -199,9 +218,10 @@ export function TicketSelector() {
               id="phone"
               type="tel"
               value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
+              onChange={(e) => setPhoneNumber(formatPhoneNumber(e.target.value))}
               placeholder="(00) 90000-0000"
               className="bg-gray-100 border-gray-300 text-black"
+              maxLength={15}
             />
             <p className="text-xs text-gray-500 mt-1">Será utilizado para entrarmos em contato caso você ganhe.</p>
           </div>
@@ -272,9 +292,10 @@ export function TicketSelector() {
                                     id="share-phone"
                                     type="tel"
                                     value={sharePhoneNumber}
-                                    onChange={(e) => setSharePhoneNumber(e.target.value)}
+                                    onChange={(e) => setSharePhoneNumber(formatPhoneNumber(e.target.value))}
                                     placeholder="(00) 90000-0000"
                                     className="bg-gray-100 border-gray-300 text-black"
+                                    maxLength={15}
                                 />
                             </div>
                             <Button onClick={handleGenerateLink} className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
@@ -295,5 +316,3 @@ export function TicketSelector() {
     
   );
 }
-
-    

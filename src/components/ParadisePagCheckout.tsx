@@ -2,7 +2,7 @@
 // @ts-nocheck
 "use client";
 import React, { useEffect, useState, useRef, createContext, useContext } from 'react';
-import { createPayment } from '@/app/actions/paradisepag';
+import { createPayment, checkPaymentStatus } from '@/app/actions/paradisepag';
 import { useRouter } from 'next/navigation';
 
 const CHECKOUT_CONFIG = {
@@ -31,13 +31,12 @@ export const ParadisePagProvider = ({ children, onPaymentConfirm, testButtonRedi
     const [modalOpen, setModalOpen] = useState(false);
     const [pixData, setPixData] = useState(null);
     const [checkoutData, setCheckoutData] = useState(null);
-    const [showConfirmButton, setShowConfirmButton] = useState(false);
     const qrCodeRef = useRef(null);
+    const pollingIntervalRef = useRef(null);
 
     const createCheckout = async (data) => {
         setCheckoutData(data);
         setIsLoading(true);
-        setShowConfirmButton(false);
         try {
             const utms = Object.fromEntries(new URLSearchParams(window.location.search));
             const paymentData = { 
@@ -75,15 +74,33 @@ export const ParadisePagProvider = ({ children, onPaymentConfirm, testButtonRedi
         }
     }, []);
 
+    const startPolling = (hash) => {
+        if (pollingIntervalRef.current) {
+            clearInterval(pollingIntervalRef.current);
+        }
+        pollingIntervalRef.current = setInterval(async () => {
+            const statusResult = await checkPaymentStatus(hash);
+            if (statusResult.payment_status === 'paid') {
+                handleConfirmPayment();
+            }
+        }, 3000); // Check every 3 seconds
+    };
+
+    const stopPolling = () => {
+        if (pollingIntervalRef.current) {
+            clearInterval(pollingIntervalRef.current);
+            pollingIntervalRef.current = null;
+        }
+    };
+
     useEffect(() => {
-      let timeout;
-      if(modalOpen) {
-        timeout = setTimeout(() => {
-          setShowConfirmButton(true);
-        }, 5000);
-      }
-      return () => clearTimeout(timeout);
-    }, [modalOpen]);
+        if (modalOpen && pixData?.hash) {
+            startPolling(pixData.hash);
+        } else {
+            stopPolling();
+        }
+        return () => stopPolling();
+    }, [modalOpen, pixData]);
 
     useEffect(() => {
         if (modalOpen && pixData?.pix_qr_code && qrCodeRef.current) {
@@ -104,12 +121,6 @@ export const ParadisePagProvider = ({ children, onPaymentConfirm, testButtonRedi
         }
     }, [modalOpen, pixData]);
 
-    useEffect(() => {
-        if (pixData) {
-            console.log('Conteúdo do estado pixData:', pixData);
-        }
-    }, [pixData]);
-
     const handleCopy = () => {
         navigator.clipboard.writeText(pixData.pix_qr_code).then(() => {
             alert('Código PIX copiado!');
@@ -120,7 +131,7 @@ export const ParadisePagProvider = ({ children, onPaymentConfirm, testButtonRedi
         setModalOpen(false);
         setPixData(null);
         setCheckoutData(null);
-        setShowConfirmButton(false);
+        stopPolling();
     }
 
     const handleConfirmPayment = () => {
@@ -196,18 +207,6 @@ export const ParadisePagProvider = ({ children, onPaymentConfirm, testButtonRedi
                             Ir para Página de Teste
                         </button>
                         
-                        {showConfirmButton && (
-                          <button onClick={handleConfirmPayment} style={{
-                              width: '100%', padding: '0.75rem', border: 'none',
-                              backgroundColor: '#f59e0b', // A different color for confirmation
-                              color: CHECKOUT_CONFIG.pixModalButtonTextColor,
-                              borderRadius: '4px', cursor: 'pointer',
-                              fontSize: '1rem', fontWeight: 'bold', marginBottom: '1rem'
-                          }}>
-                              Confirmar Pagamento
-                          </button>
-                        )}
-                        
                         <p style={{
                             fontSize: '0.9rem', color: CHECKOUT_CONFIG.pixModalSecurePaymentTextColor,
                             fontWeight: 'bold'
@@ -230,5 +229,3 @@ export const useParadisePag = () => {
 };
 
 export default ParadisePagProvider;
-
-    

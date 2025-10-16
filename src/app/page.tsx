@@ -62,7 +62,7 @@ function MainContent() {
 export default function Home() {
   const router = useRouter();
   const handlePaymentConfirmed = () => {
-    router.push('/parabens');
+    router.push('/roleta');
   };
 
   return (

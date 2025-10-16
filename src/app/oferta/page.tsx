@@ -2,7 +2,6 @@ import Image from 'next/image';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { TicketSelector } from '@/components/TicketSelector';
-import { BeneficiaryInstitution } from '@/components/BeneficiaryInstitution';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { VivaPrivilegios } from '@/components/VivaPrivilegios';
 import { PrizeList } from '@/components/PrizeList';
@@ -44,7 +43,6 @@ export default function OfertaPage() {
                 <div className="max-w-2xl mx-auto">
                   <TicketSelector />
                   <PrizeList />
-                  <BeneficiaryInstitution />
                   <VivaPrivilegios />
                 </div>
               </div>

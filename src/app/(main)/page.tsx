@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { TicketSelector } from '@/components/TicketSelector';
-import { BeneficiaryInstitution } from '@/components/BeneficiaryInstitution';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { VivaPrivilegios } from '@/components/VivaPrivilegios';
 import { ParadisePagProvider } from '@/components/ParadisePagCheckout';
@@ -49,7 +48,6 @@ function MainContent() {
               <div className="max-w-2xl mx-auto">
                 <TicketSelector />
                 <PrizeList />
-                <BeneficiaryInstitution />
                 <VivaPrivilegios />
               </div>
             </div>

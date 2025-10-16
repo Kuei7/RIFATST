@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useMemo, useEffect } from 'react';
@@ -100,7 +99,7 @@ export function TicketSelector() {
           <div className="text-center mb-4">
               <div className="text-sm text-black flex items-center justify-center gap-2">
                   Sorteio 
-                  <Badge className="bg-orange-500 text-white font-bold">HOJE</Badge> 
+                  <Badge className="bg-orange-500 text-white font-bold">31/10</Badge> 
                   por apenas 
                   <Badge className="bg-primary text-primary-foreground font-bold">R$0,03</Badge>
               </div>

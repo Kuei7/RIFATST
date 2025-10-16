@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useMemo, useEffect } from 'react';
@@ -42,7 +43,7 @@ const ticketOptions: TicketOption[] = [
     { id: 8, tickets: 50000, price: 495.00, offerHash: 'COLOQUE_O_HASH_AQUI' },
 ];
 
-const MAX_TICKETS = 50000;
+const MAX_PRICE = 499;
 
 const formatPhoneNumber = (value: string) => {
   if (!value) return "";
@@ -79,35 +80,34 @@ export function TicketSelector() {
     [selectedOptionId]
   );
   
-  const currentTotalTickets = useMemo(() => {
-    if (!selectedOption) return 0;
-    return selectedOption.tickets * quantity;
-  }, [selectedOption, quantity]);
-
-
   const totalPrice = useMemo(() => {
     if (!selectedOption) return 0;
     return selectedOption.price * quantity;
   }, [selectedOption, quantity]);
   
+  const currentTotalTickets = useMemo(() => {
+    if (!selectedOption) return 0;
+    return selectedOption.tickets * quantity;
+  }, [selectedOption, quantity]);
+
   const handleQuantityChange = (amount: number) => {
     setQuantity(prev => {
         const newQuantity = prev + amount;
         if (!selectedOption || newQuantity < 1) return 1;
 
-        const newTotalTickets = selectedOption.tickets * newQuantity;
-        if (newTotalTickets > MAX_TICKETS) {
-            // Adjust quantity to not exceed max tickets
-            return Math.floor(MAX_TICKETS / selectedOption.tickets);
+        const newTotalPrice = selectedOption.price * newQuantity;
+        if (newTotalPrice > MAX_PRICE) {
+            // Adjust quantity to not exceed max price
+            return Math.floor(MAX_PRICE / selectedOption.price);
         }
         return newQuantity;
     });
   };
 
-  const isMaxTicketsReached = useMemo(() => {
+  const isMaxPriceReached = useMemo(() => {
     if (!selectedOption) return false;
-    // Check if adding one more set of tickets would exceed the limit
-    return selectedOption.tickets * (quantity + 1) > MAX_TICKETS;
+    // Check if adding one more set of tickets would exceed the price limit
+    return selectedOption.price * (quantity + 1) > MAX_PRICE;
   }, [selectedOption, quantity]);
   
   const handlePurchase = async () => {
@@ -152,6 +152,19 @@ export function TicketSelector() {
     }
   };
 
+  useEffect(() => {
+    // When selected option changes, reset quantity and check if the base price exceeds max price
+    if (selectedOption) {
+        setQuantity(1);
+        if (selectedOption.price > MAX_PRICE) {
+            const suitableOption = ticketOptions.find(opt => opt.price <= MAX_PRICE);
+            if (suitableOption) {
+                setSelectedOptionId(suitableOption.id);
+            }
+        }
+    }
+  }, [selectedOptionId, selectedOption]);
+
 
   return (
     
@@ -178,7 +191,6 @@ export function TicketSelector() {
                 key={option.id}
                 onClick={() => {
                   setSelectedOptionId(option.id);
-                  setQuantity(1); // Reset quantity when changing option
                 }}
                 className={cn(
                   "relative text-center p-3 rounded-md border-2 transition-all duration-200 transform hover:scale-105 text-white",
@@ -204,7 +216,7 @@ export function TicketSelector() {
               <span className="text-xl font-bold text-center text-primary-foreground">
                 {currentTotalTickets}
               </span>
-              <Button variant="ghost" size="icon" onClick={() => handleQuantityChange(1)} disabled={isMaxTicketsReached} className="text-primary-foreground hover:bg-primary/80">
+              <Button variant="ghost" size="icon" onClick={() => handleQuantityChange(1)} disabled={isMaxPriceReached} className="text-primary-foreground hover:bg-primary/80">
                 <Plus className="h-6 w-6" />
               </Button>
           </div>
@@ -316,3 +328,4 @@ export function TicketSelector() {
     
   );
 }
+

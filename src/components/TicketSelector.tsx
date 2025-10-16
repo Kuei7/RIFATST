@@ -4,12 +4,23 @@ import { useState, useMemo, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Minus, Star, ShoppingCart, Phone, Gift } from 'lucide-react';
+import { Plus, Minus, Star, ShoppingCart, Phone, Gift, Share2, Copy } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useParadisePag } from '@/components/ParadisePagCheckout';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { useToast } from "@/hooks/use-toast";
 
 
 type TicketOption = {
@@ -38,6 +49,11 @@ export function TicketSelector() {
   const [quantity, setQuantity] = useState(1);
   const [phoneNumber, setPhoneNumber] = useState('');
   const { createCheckout } = useParadisePag();
+
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [sharePhoneNumber, setSharePhoneNumber] = useState('');
+  const [generatedLink, setGeneratedLink] = useState('');
+  const { toast } = useToast();
 
   const selectedOption = useMemo(
     () => ticketOptions.find(opt => opt.id === selectedOptionId),
@@ -91,6 +107,32 @@ export function TicketSelector() {
     
     await createCheckout(checkoutData);
   };
+
+  const handleGenerateLink = () => {
+    if (sharePhoneNumber.trim()) {
+      const currentUrl = window.location.origin + window.location.pathname;
+      const affiliateLink = `${currentUrl}?affiliate=${sharePhoneNumber.replace(/\D/g, '')}`;
+      setGeneratedLink(affiliateLink);
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Número inválido",
+        description: "Por favor, insira um número de telefone válido.",
+      });
+    }
+  };
+
+  const handleCopyLink = () => {
+    if(generatedLink) {
+        navigator.clipboard.writeText(generatedLink).then(() => {
+            toast({
+                title: "Link Copiado!",
+                description: "Seu link de compartilhamento foi copiado para a área de transferência.",
+            })
+        });
+    }
+  };
+
 
   return (
     
@@ -185,10 +227,73 @@ export function TicketSelector() {
                 <p className="text-sm text-primary/80">Se uma pessoa comprar 100 cotas pelo seu link, você ganha 20 cotas de graça!</p>
               </div>
             </div>
+             <Button 
+                onClick={() => {
+                    setGeneratedLink('');
+                    setSharePhoneNumber('');
+                    setIsShareModalOpen(true);
+                }} 
+                className="w-full mt-4 bg-primary hover:bg-primary/90 text-primary-foreground"
+            >
+                <Share2 className="mr-2 h-5 w-5" />
+                Compartilhar
+            </Button>
           </div>
 
+            <AlertDialog open={isShareModalOpen} onOpenChange={setIsShareModalOpen}>
+                <AlertDialogContent className="bg-white text-gray-900">
+                    <AlertDialogHeader>
+                    <AlertDialogTitle className="text-primary">Compartilhe e Ganhe!</AlertDialogTitle>
+                    <AlertDialogDescription>
+                        {generatedLink ? 'Seu link de compartilhamento está pronto!' : 'Insira seu telefone para gerar seu link de compartilhamento e começar a ganhar cotas extras!'}
+                    </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    
+                    {generatedLink ? (
+                        <div className="flex flex-col gap-4 mt-2">
+                           <Input 
+                             id="share-link"
+                             readOnly
+                             value={generatedLink}
+                             className="bg-gray-100 border-gray-300 text-black text-sm"
+                           />
+                           <Button onClick={handleCopyLink} className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
+                             <Copy className="mr-2 h-4 w-4" />
+                             Copiar Link
+                           </Button>
+                        </div>
+                    ) : (
+                        <div className="flex flex-col gap-4 mt-2">
+                            <div className="grid w-full items-center gap-1.5">
+                                <Label htmlFor="share-phone" className="text-black">
+                                    Seu Telefone (WhatsApp)
+                                </Label>
+                                <Input
+                                    id="share-phone"
+                                    type="tel"
+                                    value={sharePhoneNumber}
+                                    onChange={(e) => setSharePhoneNumber(e.target.value)}
+                                    placeholder="(00) 90000-0000"
+                                    className="bg-gray-100 border-gray-300 text-black"
+                                />
+                            </div>
+                            <Button onClick={handleGenerateLink} className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
+                                Gerar Link
+                            </Button>
+                        </div>
+                    )}
+
+                    <AlertDialogFooter className="mt-4">
+                        <AlertDialogCancel onClick={() => setIsShareModalOpen(false)} className="bg-gray-200 text-gray-800 hover:bg-gray-300">
+                            Fechar
+                        </AlertDialogCancel>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </CardContent>
       </Card>
     
   );
 }
+
+    

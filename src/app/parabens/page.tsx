@@ -1,11 +1,16 @@
 
 "use client";
 
+import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { PrizeWheel } from "@/components/PrizeWheel";
+import { BonusPrizeWheel } from "@/components/BonusPrizeWheel";
 
-export default function ParabensPage() {
+function ParabensContent() {
+  const searchParams = useSearchParams();
+  const ticketsBought = searchParams.get('tickets');
+
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <Header />
@@ -19,10 +24,19 @@ export default function ParabensPage() {
           </p>
         </div>
         <div className="w-full max-w-2xl">
-          <PrizeWheel />
+           <BonusPrizeWheel ticketsBought={Number(ticketsBought) || 0} />
         </div>
       </main>
       <Footer />
     </div>
+  );
+}
+
+
+export default function ParabensPage() {
+  return (
+    <Suspense fallback={<div>Carregando...</div>}>
+      <ParabensContent />
+    </Suspense>
   );
 }

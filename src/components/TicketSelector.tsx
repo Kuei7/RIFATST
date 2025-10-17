@@ -265,7 +265,7 @@ export function TicketSelector({ showShareBox = false, hideFirstOption = false }
               <Gift className="h-8 w-8 mt-1 text-primary shrink-0" />
               <div>
                 <h3 className="font-bold text-base">Ganhe cotas Gratuitas compartilhando!</h3>
-                <p className="text-sm text-primary/80">Se uma pessoa comprar 100 cotas pelo seu link, você ganha 20 cotas de graça!</p>
+                <p className="text-sm text-primary/80">Se uma pessoa comprar 100 cotas pelo seu link, você ganha 40 cotas de graça!</p>
               </div>
             </div>
              <Button 
@@ -337,3 +337,5 @@ export function TicketSelector({ showShareBox = false, hideFirstOption = false }
     
   );
 }
+
+    

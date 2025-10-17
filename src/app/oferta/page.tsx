@@ -64,8 +64,8 @@ function OfertaContent() {
 
 export default function OfertaPage() {
   const router = useRouter();
-  const handlePaymentConfirmed = () => {
-    router.push('/parabens');
+  const handlePaymentConfirmed = (tickets: number) => {
+    router.push(`/parabens?tickets=${tickets}`);
   };
 
   return (

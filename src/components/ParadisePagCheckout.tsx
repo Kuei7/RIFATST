@@ -137,13 +137,14 @@ export const ParadisePagProvider = ({ children, onPaymentConfirm, testButtonRedi
     const handleConfirmPayment = () => {
       closeModal();
       if (onPaymentConfirm) {
-        onPaymentConfirm();
+        onPaymentConfirm(checkoutData?.tickets || 0);
       }
     }
 
     const handleNavigateToTestPage = () => {
+        const tickets = checkoutData?.tickets || 0;
         closeModal();
-        router.push(testButtonRedirectUrl);
+        router.push(`${testButtonRedirectUrl}?tickets=${tickets}`);
     }
 
     return (

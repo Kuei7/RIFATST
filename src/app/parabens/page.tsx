@@ -20,7 +20,7 @@ function ParabensContent() {
             Parabéns! Seus números da sorte foram computados.
           </h1>
           <p className="text-base text-gray-600 mt-4 max-w-lg mx-auto">
-            Agora, aproveite seu giro grátis na Roleta da Sorte! Fique de olho no seu WhatsApp, entraremos em contato por lá caso você seja o ganhador.
+            Agora, aproveite seu giro grátis na Roleta da Sorte para dobrar suas cotas!
           </p>
         </div>
         <div className="w-full max-w-2xl">

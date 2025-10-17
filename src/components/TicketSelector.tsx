@@ -64,8 +64,8 @@ const formatPhoneNumber = (value: string) => {
 };
 
 
-export function TicketSelector({ showShareBox = false }: { showShareBox?: boolean }) {
-  const [selectedOptionId, setSelectedOptionId] = useState<number | null>(5); // Default to popular
+export function TicketSelector({ showShareBox = false, hideFirstOption = false }: { showShareBox?: boolean, hideFirstOption?: boolean }) {
+  const [selectedOptionId, setSelectedOptionId] = useState<number | null>(hideFirstOption ? 2 : 5);
   const [quantity, setQuantity] = useState(1);
   const [phoneNumber, setPhoneNumber] = useState('');
   const { createCheckout } = useParadisePag();
@@ -75,7 +75,9 @@ export function TicketSelector({ showShareBox = false }: { showShareBox?: boolea
   const [generatedLink, setGeneratedLink] = useState('');
   const { toast } = useToast();
   
-  const ticketOptions = allTicketOptions;
+  const ticketOptions = useMemo(() => {
+    return hideFirstOption ? allTicketOptions.slice(1) : allTicketOptions;
+  }, [hideFirstOption]);
 
   const selectedOption = useMemo(
     () => ticketOptions.find(opt => opt.id === selectedOptionId),
@@ -123,7 +125,8 @@ export function TicketSelector({ showShareBox = false }: { showShareBox?: boolea
       offerHash: selectedOption.offerHash,
       customer: {
         phone_number: phoneNumber,
-      }
+      },
+      tickets: currentTotalTickets,
     };
     
     await createCheckout(checkoutData);
@@ -334,4 +337,3 @@ export function TicketSelector({ showShareBox = false }: { showShareBox?: boolea
     
   );
 }
-

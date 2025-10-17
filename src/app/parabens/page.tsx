@@ -3,7 +3,7 @@
 
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { TicketSelector } from "@/components/TicketSelector";
+import { PrizeWheel } from "@/components/PrizeWheel";
 
 export default function ParabensPage() {
   return (
@@ -15,11 +15,11 @@ export default function ParabensPage() {
             Parabéns! Seus números da sorte foram computados.
           </h1>
           <p className="text-base text-gray-600 mt-4 max-w-lg mx-auto">
-            Agora, que tal compartilhar com seus amigos e ganhar cotas extras? Fique de olho no seu WhatsApp, entraremos em contato por lá caso você seja o ganhador.
+            Agora, aproveite seu giro grátis na Roleta da Sorte! Fique de olho no seu WhatsApp, entraremos em contato por lá caso você seja o ganhador.
           </p>
         </div>
         <div className="w-full max-w-2xl">
-            <TicketSelector showShareBox={true} />
+          <PrizeWheel />
         </div>
       </main>
       <Footer />

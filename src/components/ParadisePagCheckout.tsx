@@ -25,7 +25,7 @@ const CHECKOUT_CONFIG = {
 
 const ParadisePagContext = createContext(null);
 
-export const ParadisePagProvider = ({ children, onPaymentConfirm, testButtonRedirectUrl = '/roleta' }) => {
+export const ParadisePagProvider = ({ children, onPaymentConfirm, testButtonRedirectUrl = '/roleta', resetOnLoad = false }) => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
@@ -34,9 +34,18 @@ export const ParadisePagProvider = ({ children, onPaymentConfirm, testButtonRedi
     const qrCodeRef = useRef(null);
     const pollingIntervalRef = useRef(null);
 
+    useEffect(() => {
+        if (resetOnLoad) {
+            sessionStorage.removeItem('totalTickets');
+        }
+    }, [resetOnLoad]);
+
     const createCheckout = async (data) => {
         setCheckoutData(data);
         setIsLoading(true);
+        if (resetOnLoad || !data.isUpsell) {
+            sessionStorage.removeItem('totalTickets');
+        }
         try {
             const utms = Object.fromEntries(new URLSearchParams(window.location.search));
             const paymentData = { 
@@ -135,16 +144,26 @@ export const ParadisePagProvider = ({ children, onPaymentConfirm, testButtonRedi
     }
 
     const handleConfirmPayment = () => {
+      // Add tickets to session storage
+      const ticketsFromPurchase = checkoutData?.tickets || 0;
+      const currentTotal = Number(sessionStorage.getItem('totalTickets') || '0');
+      const newTotal = currentTotal + ticketsFromPurchase;
+      sessionStorage.setItem('totalTickets', newTotal.toString());
+      
       closeModal();
       if (onPaymentConfirm) {
-        onPaymentConfirm(checkoutData?.tickets || 0);
+        onPaymentConfirm();
       }
     }
 
     const handleNavigateToTestPage = () => {
-        const tickets = checkoutData?.tickets || 0;
+        const ticketsFromPurchase = checkoutData?.tickets || 0;
+        const currentTotal = Number(sessionStorage.getItem('totalTickets') || '0');
+        const newTotal = currentTotal + ticketsFromPurchase;
+        sessionStorage.setItem('totalTickets', newTotal.toString());
+
         closeModal();
-        router.push(`${testButtonRedirectUrl}?tickets=${tickets}`);
+        router.push(testButtonRedirectUrl);
     }
 
     return (

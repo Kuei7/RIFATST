@@ -64,12 +64,12 @@ function OfertaContent() {
 
 export default function OfertaPage() {
   const router = useRouter();
-  const handlePaymentConfirmed = (tickets: number) => {
-    router.push(`/parabens?tickets=${tickets}`);
+  const handlePaymentConfirmed = () => {
+    router.push(`/parabens`);
   };
 
   return (
-    <ParadisePagProvider onPaymentConfirm={handlePaymentConfirmed} testButtonRedirectUrl="/parabens">
+    <ParadisePagProvider onPaymentConfirm={handlePaymentConfirmed} testButtonRedirectUrl="/parabens" resetOnLoad={true}>
       <OfertaContent />
     </ParadisePagProvider>
   );

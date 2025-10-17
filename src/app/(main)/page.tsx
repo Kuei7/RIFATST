@@ -68,7 +68,7 @@ export default function Home() {
   };
 
   return (
-    <ParadisePagProvider onPaymentConfirm={handlePaymentConfirmed}>
+    <ParadisePagProvider onPaymentConfirm={handlePaymentConfirmed} resetOnLoad={true}>
       <MainContent />
     </ParadisePagProvider>
   );

@@ -30,8 +30,8 @@ export function BonusPrizeWheel({ ticketsBought }: { ticketsBought: number }) {
   const { createCheckout, isLoading } = useParadisePag();
 
   const onSpinComplete = () => {
-    // Navigate to a relevant page or just close the modal. For now, let's go home.
-    router.push('/');
+    // If user declines the upsell, redirect them to the final wheel page anyway
+    router.push('/roleta');
   }
 
   const triggerConfetti = () => {
@@ -61,7 +61,7 @@ export function BonusPrizeWheel({ ticketsBought }: { ticketsBought: number }) {
     
     const totalSpins = 5;
     
-    // The index for "DOBRO DE COTAS" is 0
+    // The index for "DOBRO" is 0
     const targetPrizeIndex = 0; 
     
     const targetSegmentCenterAngle = (targetPrizeIndex * segmentAngle) + (segmentAngle / 2);
@@ -93,10 +93,11 @@ export function BonusPrizeWheel({ ticketsBought }: { ticketsBought: number }) {
     sessionStorage.setItem('exitIntentShown', 'true');
 
     const checkoutData = {
-      amount: Math.round(19.90 * 100), // R$19,90 in cents
+      amount: 1990, // R$19,90 in cents
       offerHash: 'or7s9g2c33', // Specific hash for the upsell offer
-      customer: {}, // Customer data can be pre-filled if available, but the server action can generate it.
-      tickets: ticketsBought, // We pass the original number of tickets to potentially double it later
+      customer: {}, // Customer data can be pre-filled if available
+      tickets: ticketsBought, // The number of tickets to be added if payment is successful
+      isUpsell: true,
     };
     
     await createCheckout(checkoutData);

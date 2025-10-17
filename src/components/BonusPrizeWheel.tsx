@@ -214,5 +214,3 @@ export function BonusPrizeWheel({ ticketsBought }: { ticketsBought: number }) {
     </div>
   );
 }
-
-    

@@ -1,13 +1,13 @@
 
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import confetti from 'canvas-confetti';
 import { useRouter } from 'next/navigation';
-import { Clock, Gift } from 'lucide-react';
+import { Gift } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import Image from 'next/image';
+import { useParadisePag } from './ParadisePagCheckout';
 
 const prizes = [
     { text: 'DOBRO DE COTAS', type: 'win' }, // Target prize
@@ -27,6 +27,7 @@ export function BonusPrizeWheel({ ticketsBought }: { ticketsBought: number }) {
   const [isSpinning, setIsSpinning] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const [selectedPrize, setSelectedPrize] = useState({ text: '', type: '' });
+  const { createCheckout, isLoading } = useParadisePag();
 
   const onSpinComplete = () => {
     // Navigate to a relevant page or just close the modal. For now, let's go home.
@@ -86,6 +87,20 @@ export function BonusPrizeWheel({ ticketsBought }: { ticketsBought: number }) {
 
     }, spinDuration);
   };
+
+  const handleUpsellPurchase = async () => {
+    // Disable exit intent popup once purchase is initiated
+    sessionStorage.setItem('exitIntentShown', 'true');
+
+    const checkoutData = {
+      amount: Math.round(19.90 * 100), // R$19,90 in cents
+      offerHash: 'or7s9g2c33', // Specific hash for the upsell offer
+      customer: {}, // Customer data can be pre-filled if available, but the server action can generate it.
+      tickets: ticketsBought, // We pass the original number of tickets to potentially double it later
+    };
+    
+    await createCheckout(checkoutData);
+  }
   
   return (
     <div className="bg-card text-card-foreground p-6 rounded-lg shadow-lg flex flex-col items-center max-w-md w-full">
@@ -164,14 +179,27 @@ export function BonusPrizeWheel({ ticketsBought }: { ticketsBought: number }) {
           "animate-pulse-bright"
         )}>
           <Gift className="h-20 w-20 text-yellow-500" />
-          <p className="font-bold text-2xl">Parabéns! Você ganhou:</p>
-          <p className="font-black text-4xl tracking-tighter text-yellow-500 drop-shadow-lg">
-            MAIS {ticketsBought.toLocaleString('pt-BR')} COTAS!
+          <p className="font-bold text-2xl">Parabéns! Você desbloqueou uma oferta exclusiva!</p>
+          <p className="text-base text-gray-600">
+            Por apenas <strong className="text-primary">R$19,90</strong>, você pode dobrar as cotas que acabou de comprar e ganhar mais{' '}
+            <strong className="text-primary">{ticketsBought.toLocaleString('pt-BR')} cotas!</strong>
           </p>
-          <p className="text-base text-gray-600">Seus novos números da sorte serão enviados para o seu WhatsApp.</p>
-          <Button onClick={onSpinComplete} className="mt-4 w-full h-14 bg-primary hover:bg-primary/90 text-primary-foreground font-bold uppercase text-xl shadow-lg">
-            Ver meus números
-          </Button>
+          <div className="flex flex-col gap-3 w-full mt-4">
+             <Button 
+                onClick={handleUpsellPurchase} 
+                disabled={isLoading}
+                className="w-full h-14 bg-accent hover:bg-accent/90 text-accent-foreground font-bold uppercase text-xl shadow-lg"
+             >
+                {isLoading ? "Processando..." : "QUERO DOBRAR MINHAS COTAS!"}
+            </Button>
+            <Button 
+                onClick={onSpinComplete} 
+                variant="ghost" 
+                className="w-full text-gray-500 hover:text-gray-700"
+            >
+                Não, obrigado
+            </Button>
+          </div>
         </div>
       )}
        {showResult && selectedPrize.type === 'lose' && (
@@ -187,3 +215,4 @@ export function BonusPrizeWheel({ ticketsBought }: { ticketsBought: number }) {
   );
 }
 
+    

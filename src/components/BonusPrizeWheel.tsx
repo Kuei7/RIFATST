@@ -10,13 +10,13 @@ import { cn } from '@/lib/utils';
 import { useParadisePag } from './ParadisePagCheckout';
 
 const prizes = [
-    { text: 'DOBRO DE COTAS', type: 'win' }, // Target prize
+    { text: 'DOBRO', type: 'win' }, // Target prize
     { text: 'NADA', type: 'lose' },
+    { text: 'R$1.000', type: 'lose' },
     { text: 'NADA', type: 'lose' },
+    { text: '50% OFF', type: 'lose' },
     { text: 'NADA', type: 'lose' },
-    { text: 'NADA', type: 'lose' },
-    { text: 'NADA', type: 'lose' },
-    { text: 'NADA', type: 'lose' },
+    { text: 'IPHONE 17', type: 'lose' },
     { text: 'NADA', type: 'lose' },
 ];
 const segmentAngle = 360 / prizes.length;

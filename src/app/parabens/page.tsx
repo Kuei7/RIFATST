@@ -15,7 +15,7 @@ function ParabensContent() {
     <div className="flex flex-col min-h-screen bg-background">
       <Header />
       <main className="flex-grow flex flex-col items-center justify-center bg-gray-100 p-4">
-        <div className="text-center mb-8 max-w-2xl bg-white p-8 rounded-xl shadow-lg">
+        <div className="text-center mb-8 max-w-2xl bg-white p-8 rounded-xl shadow-lg w-full">
           <h1 className="text-4xl font-black text-primary font-headline tracking-tight">
             Parabéns! Seus números da sorte foram computados.
           </h1>
@@ -23,7 +23,7 @@ function ParabensContent() {
             Agora, aproveite seu giro grátis na Roleta da Sorte para dobrar suas cotas!
           </p>
         </div>
-        <div className="w-full max-w-2xl">
+        <div className="w-full max-w-2xl flex justify-center">
            <BonusPrizeWheel ticketsBought={Number(ticketsBought) || 0} />
         </div>
       </main>

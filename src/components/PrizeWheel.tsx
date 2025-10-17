@@ -11,11 +11,11 @@ import Image from 'next/image';
 
 // Reordered to match the visual layout of the wheel
 const prizes = [
-    { text: 'R$ 300', type: 'win' },    // blue
+    { text: 'R$ 3.000', type: 'win' },    // blue
     { text: 'NADA', type: 'lose' },     // white
-    { text: 'R$ 100', type: 'win' },    // blue
+    { text: 'R$ 1.000', type: 'win' },    // blue
     { text: 'NADA', type: 'lose' },     // white
-    { text: '50% OFF', type: 'win' },   // blue
+    { text: 'IPHONE 17', type: 'win' },   // blue
     { text: 'NADA', type: 'lose' },     // white
     { text: '60% OFF', type: 'win' },   // blue - TARGET
     { text: 'NADA', type: 'lose' },     // white

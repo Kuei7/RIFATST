@@ -150,7 +150,7 @@ export async function createPayment(data) {
             return { data: { transaction: frontend_response }, status: response.status };
         }
         
-        return { data: responseData, status: response.status, error: responseData.message };
+        return { data: responseData, status: response.status, error: responseData.message || responseData.error };
 
     } catch (error) {
         return { error: error.message, status: 500 };

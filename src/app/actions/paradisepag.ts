@@ -2,11 +2,9 @@
 // @ts-nocheck
 'use server';
 
-const API_TOKEN = 'yZLG3dKGFhhPYE4Mezz1HLMtqXmfnsokvD22tiklMz2BvdMHODvPQ0IanOCk';
-// OFFER_HASH will be passed dynamically
-const PRODUCT_HASH = '034fadkvwm';
-// BASE_AMOUNT will be passed dynamically
-const PRODUCT_TITLE = 'VIVA SORTE';
+const API_TOKEN = 'sk_a689a20c480aee9372486cfc6ed7c349ecd7951ce3129f0236adff9a31ee42c7';
+const PRODUCT_HASH = 'prod_36678ec9169f9196';
+const PRODUCT_TITLE = 'Viva Sorte';
 const IS_DROPSHIPPING = false;
 const PIX_EXPIRATION_MINUTES = 5;
 
@@ -14,12 +12,15 @@ export async function checkPaymentStatus(hash) {
     if (!hash) {
         return { error: 'Hash não informado', status: 400 };
     }
-    const status_url = `https://api.paradisepagbr.com/api/public/v1/transactions/${encodeURIComponent(hash)}?api_token=${API_TOKEN}`;
+    const status_url = `https://multi.paradisepags.com/api/v1/check_status.php?hash=${encodeURIComponent(hash)}`;
 
     try {
         const response = await fetch(status_url, {
             method: 'GET',
-            headers: { 'Accept': 'application/json' },
+            headers: { 
+                'Accept': 'application/json',
+                'X-API-Key': API_TOKEN
+            },
             cache: 'no-store'
         });
 
@@ -41,16 +42,11 @@ export async function checkPaymentStatus(hash) {
 
 export async function createPayment(data) {
     const { amount, offerHash } = data;
-    const api_url = `https://api.paradisepagbr.com/api/public/v1/transactions?api_token=${API_TOKEN}`;
+    const api_url = `https://multi.paradisepags.com/api/v1/transaction.php`;
     let customer_data = data.customer || {};
     const utms = data.utms || {};
-    const is_direct_pix = true;
-
-    if (is_direct_pix && !customer_data.phone_number) {
-        // If it's direct PIX and no phone number is provided, we might have an issue.
-        // The logic below will generate one, but it's better if it comes from the client.
-    }
-
+    
+    // --- FAKE DATA GENERATION ---
     const cpfs = ['42879052882', '07435993492', '93509642791', '73269352468', '35583648805', '59535423720', '77949412453', '13478710634', '09669560950', '03270618638'];
     const firstNames = ['João', 'Marcos', 'Pedro', 'Lucas', 'Mateus', 'Gabriel', 'Daniel', 'Bruno', 'Maria', 'Ana', 'Juliana', 'Camila', 'Beatriz', 'Larissa', 'Sofia', 'Laura'];
     const lastNames = ['Silva', 'Santos', 'Oliveira', 'Souza', 'Rodrigues', 'Ferreira', 'Alves', 'Pereira', 'Lima', 'Gomes', 'Costa', 'Ribeiro', 'Martins', 'Carvalho'];
@@ -58,40 +54,35 @@ export async function createPayment(data) {
     const emailProviders = ['gmail.com', 'hotmail.com', 'outlook.com', 'yahoo.com.br', 'uol.com.br', 'terra.com.br'];
 
     let generatedName = null;
-    if (!customer_data.name && (is_direct_pix || !false)) {
+    if (!customer_data.name) {
         const randomFirstName = firstNames[Math.floor(Math.random() * firstNames.length)];
         const randomLastName = lastNames[Math.floor(Math.random() * lastNames.length)];
         generatedName = `${randomFirstName} ${randomLastName}`;
         customer_data.name = generatedName;
     }
 
-    if (!customer_data.email && (is_direct_pix || !false)) {
-        const nameForEmail = generatedName || customer_data.name || `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`;
+    if (!customer_data.email) {
+        const nameForEmail = generatedName || customer_data.name;
         const nameParts = String(nameForEmail).split(' ', 2);
         const normalize = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^\w]/g, '');
         
         let emailUserParts = [];
-        if (nameParts.length > 0 && nameParts[0].length > 0) {
-            emailUserParts.push(normalize(nameParts[0]));
-        }
-        if (nameParts.length > 1 && nameParts[1].length > 0) {
-             emailUserParts.push(normalize(nameParts[1]));
-        }
-        if(emailUserParts.length === 0){
-            emailUserParts.push('cliente');
-        }
+        if (nameParts.length > 0 && nameParts[0].length > 0) emailUserParts.push(normalize(nameParts[0]));
+        if (nameParts.length > 1 && nameParts[1].length > 0) emailUserParts.push(normalize(nameParts[1]));
+        if(emailUserParts.length === 0) emailUserParts.push('cliente');
+
         const emailUser = `${emailUserParts.join('.')}${Math.floor(100 + Math.random() * 900)}`;
         customer_data.email = `${emailUser}@${emailProviders[Math.floor(Math.random() * emailProviders.length)]}`;
     }
 
-    // Use provided phone number, otherwise generate one (for fallback)
-    if (!customer_data.phone_number && (is_direct_pix || !false)) {
+    if (!customer_data.phone_number) {
         customer_data.phone_number = `${ddds[Math.floor(Math.random() * ddds.length)]}9${Math.floor(10000000 + Math.random() * 90000000)}`;
     }
 
-    if (!customer_data.document && (is_direct_pix || !false)) {
+    if (!customer_data.document) {
         customer_data.document = cpfs[Math.floor(Math.random() * cpfs.length)];
     }
+    // --- END FAKE DATA ---
 
     if (!IS_DROPSHIPPING) {
         customer_data.street_name = customer_data.street_name ?? 'Rua do Produto Digital';
@@ -103,31 +94,63 @@ export async function createPayment(data) {
         customer_data.zip_code = customer_data.zip_code ?? '00000000';
     }
 
-    const cart_items = [{ "product_hash": PRODUCT_HASH, "title": PRODUCT_TITLE, "price": amount, "quantity": 1, "operation_type": 1, "tangible": IS_DROPSHIPPING }];
-
-    const payload = { 
-        "amount": Math.round(amount), 
-        "offer_hash": offerHash, 
-        "payment_method": "pix", 
-        "customer": customer_data, 
-        "cart": cart_items, 
-        "installments": 1, 
-        "tracking": utms 
+    const payload = {
+      "amount": Math.round(amount),
+      "description": PRODUCT_TITLE,
+      "reference": 'CKO-' + new Date().getTime(),
+      "checkoutUrl": data.checkout_url || '',
+      "productHash": PRODUCT_HASH,
+      "orderbump": [],
+      "customer": {
+          'name': customer_data.name,
+          'email': customer_data.email,
+          'document': (customer_data.document || '').replace(/\D/g, ''),
+          'phone': (customer_data.phone_number || '').replace(/\D/g, '')
+      },
+      "address": {
+          "street": customer_data.street_name,
+          "number": customer_data.number,
+          "neighborhood": customer_data.neighborhood,
+          "city": customer_data.city,
+          "state": customer_data.state,
+          "zipcode": (customer_data.zip_code || '').replace(/\D/g, ''),
+          "complement": customer_data.complement || ''
+      },
+      "tracking": utms
     };
 
-    if (PIX_EXPIRATION_MINUTES > 0) {
-        payload.pix_expires_in = PIX_EXPIRATION_MINUTES * 60;
+    if (Object.keys(payload.tracking).length === 0) {
+        delete payload.tracking;
     }
 
     try {
         const response = await fetch(api_url, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json', 
+                'Accept': 'application/json',
+                'X-API-Key': API_TOKEN
+            },
             body: JSON.stringify(payload)
         });
 
         const responseData = await response.json();
-        return { data: responseData, status: response.status };
+        
+        // Handle new API response structure
+        if (response.ok && responseData.transaction) {
+             const transaction_data = responseData.transaction;
+             const frontend_response = {
+                hash: transaction_data.id,
+                pix: {
+                    pix_qr_code: transaction_data.qr_code || '',
+                    expiration_date: transaction_data.expires_at || null
+                },
+                amount_paid: Math.round(amount)
+            };
+            return { data: { transaction: frontend_response }, status: response.status };
+        }
+        
+        return { data: responseData, status: response.status, error: responseData.message };
 
     } catch (error) {
         return { error: error.message, status: 500 };

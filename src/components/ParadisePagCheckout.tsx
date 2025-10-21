@@ -52,7 +52,8 @@ export const ParadisePagProvider = ({ children, onPaymentConfirm, testButtonRedi
                 customer: data.customer || {}, 
                 utms: utms,
                 amount: data.amount,
-                offerHash: data.offerHash
+                offerHash: data.offerHash,
+                checkout_url: window.location.href,
             };
             const result = await createPayment(paymentData);
 
@@ -112,12 +113,12 @@ export const ParadisePagProvider = ({ children, onPaymentConfirm, testButtonRedi
     }, [modalOpen, pixData]);
 
     useEffect(() => {
-        if (modalOpen && pixData?.pix_qr_code && qrCodeRef.current) {
+        if (modalOpen && pixData?.pix?.pix_qr_code && qrCodeRef.current) {
             const generateQRCode = () => {
                 if(window.QRCode) {
                     qrCodeRef.current.innerHTML = "";
                     new window.QRCode(qrCodeRef.current, {
-                        text: pixData.pix_qr_code,
+                        text: pixData.pix.pix_qr_code,
                         width: 256,
                         height: 256,
                         correctLevel: window.QRCode.CorrectLevel.H
@@ -131,7 +132,7 @@ export const ParadisePagProvider = ({ children, onPaymentConfirm, testButtonRedi
     }, [modalOpen, pixData]);
 
     const handleCopy = () => {
-        navigator.clipboard.writeText(pixData.pix_qr_code).then(() => {
+        navigator.clipboard.writeText(pixData.pix.pix_qr_code).then(() => {
             alert('Código PIX copiado!');
         });
     };
@@ -198,7 +199,7 @@ export const ParadisePagProvider = ({ children, onPaymentConfirm, testButtonRedi
                         </div>
 
                         <div style={{ display: 'flex', margin: '1rem 0' }}>
-                            <input type="text" readOnly value={pixData.pix_qr_code} style={{
+                            <input type="text" readOnly value={pixData.pix.pix_qr_code} style={{
                                 width: '100%', padding: '0.5rem',
                                 backgroundColor: CHECKOUT_CONFIG.pixModalInputBackgroundColor,
                                 border: `1px solid ${CHECKOUT_CONFIG.pixModalInputBorderColor}`,

@@ -137,10 +137,10 @@ export async function createPayment(data) {
         const responseData = await response.json();
         
         // Handle new API response structure
-        if (response.ok && responseData.transaction) {
-             const transaction_data = responseData.transaction;
+        if (response.ok && (responseData.transaction || responseData.qr_code)) {
+             const transaction_data = responseData.transaction || responseData;
              const frontend_response = {
-                hash: transaction_data.id,
+                hash: transaction_data.id || transaction_data.transaction_id,
                 pix: {
                     pix_qr_code: transaction_data.qr_code || '',
                     expiration_date: transaction_data.expires_at || null

@@ -31,7 +31,11 @@ export default function RootLayout({
         ></Script>
         <Script id="utmify-pixel" strategy="afterInteractive">
           {`
+<<<<<<< HEAD
             window.pixelId = "68f8532520988b17653585d5";
+=======
+            window.pixelId = "68f82d9386051ff8a9247775";
+>>>>>>> d629f005b8094ad4f4fec95b3bdb37ad65b2ed3b
             var a = document.createElement("script");
             a.setAttribute("async", "");
             a.setAttribute("defer", "");

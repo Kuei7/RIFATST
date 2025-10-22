@@ -13,11 +13,15 @@ import { ParadisePagProvider } from '@/components/ParadisePagCheckout';
 import { PrizeList } from '@/components/PrizeList';
 import { ExitIntentPopup } from '@/components/ExitIntentPopup';
 
-function MainContent() {
+export default function HomePage() {
   const router = useRouter();
 
+  const handlePaymentConfirmed = () => {
+    router.push('/roleta');
+  };
+
   return (
-    <>
+    <ParadisePagProvider onPaymentConfirm={handlePaymentConfirmed} resetOnLoad={true}>
       <ExitIntentPopup />
       <div className="flex flex-col min-h-screen bg-background">
         <Header />
@@ -56,20 +60,6 @@ function MainContent() {
         </main>
         <Footer />
       </div>
-    </>
-  );
-}
-
-
-export default function Home() {
-  const router = useRouter();
-  const handlePaymentConfirmed = () => {
-    router.push('/roleta');
-  };
-
-  return (
-    <ParadisePagProvider onPaymentConfirm={handlePaymentConfirmed} resetOnLoad={true}>
-      <MainContent />
     </ParadisePagProvider>
   );
 }

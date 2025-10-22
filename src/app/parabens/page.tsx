@@ -5,7 +5,6 @@ import { useState, useEffect, Suspense } from 'react';
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { BonusPrizeWheel } from "@/components/BonusPrizeWheel";
-import { ParadisePagProvider } from '@/components/ParadisePagCheckout';
 import { useRouter } from 'next/navigation';
 
 function ParabensContent() {
@@ -14,6 +13,8 @@ function ParabensContent() {
   useEffect(() => {
     const tickets = sessionStorage.getItem('totalTickets');
     setTotalTickets(Number(tickets) || 0);
+    // Set redirect for the next payment
+    sessionStorage.setItem('upsellRedirect', '/roleta');
   }, []);
 
   return (
@@ -38,17 +39,9 @@ function ParabensContent() {
 }
 
 export default function ParabensPage() {
-    const router = useRouter();
-    const handleUpsellPayment = () => {
-        // After the upsell is paid, redirect to the final roleta page
-        router.push('/roleta');
-    }
-
   return (
     <Suspense fallback={<div>Carregando...</div>}>
-      <ParadisePagProvider onPaymentConfirm={handleUpsellPayment}>
         <ParabensContent />
-      </ParadisePagProvider>
     </Suspense>
   );
 }

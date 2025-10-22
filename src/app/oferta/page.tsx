@@ -2,8 +2,6 @@
 "use client";
 
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { TicketSelector } from '@/components/TicketSelector';
@@ -11,11 +9,15 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { VivaPrivilegios } from '@/components/VivaPrivilegios';
 import { PrizeList } from '@/components/PrizeList';
 import { OfferCountdown } from '@/components/OfferCountdown';
-import { ParadisePagProvider } from '@/components/ParadisePagCheckout';
+import { useEffect } from 'react';
 
 
-function OfertaContent() {
+export default function OfertaPage() {
   const bannerImage = PlaceHolderImages.find(p => p.id === 'vivasorte-banner');
+
+  useEffect(() => {
+    sessionStorage.setItem('upsellRedirect', '/parabens');
+  }, []);
 
   return (
     <>
@@ -59,18 +61,4 @@ function OfertaContent() {
       </div>
     </>
   )
-}
-
-
-export default function OfertaPage() {
-  const router = useRouter();
-  const handlePaymentConfirmed = () => {
-    router.push(`/parabens`);
-  };
-
-  return (
-    <ParadisePagProvider onPaymentConfirm={handlePaymentConfirmed} testButtonRedirectUrl="/parabens" resetOnLoad={true}>
-      <OfertaContent />
-    </ParadisePagProvider>
-  );
 }

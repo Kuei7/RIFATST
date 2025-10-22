@@ -1,8 +1,9 @@
-import type {Metadata} from 'next';
-import './globals.css';
-import { Toaster } from "@/components/ui/toaster";
-import { ParadisePagProvider } from '@/components/ParadisePagCheckout';
+import type { Metadata } from 'next';
 import Script from 'next/script';
+import { Toaster } from '@/components/ui/toaster';
+import { ParadisePagProvider } from '@/components/ParadisePagCheckout';
+import './globals.css';
+
 
 export const metadata: Metadata = {
   title: 'Viva Sorte',

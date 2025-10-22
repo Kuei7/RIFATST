@@ -28,6 +28,7 @@ type TicketOption = {
   id: number;
   tickets: number;
   price: number;
+  originalPrice?: number;
   offerHash: string;
   isPopular?: boolean;
 };
@@ -64,7 +65,7 @@ const formatPhoneNumber = (value: string) => {
 };
 
 
-export function TicketSelector({ showShareBox = false, hideFirstOption = false }: { showShareBox?: boolean, hideFirstOption?: boolean }) {
+export function TicketSelector({ showShareBox = false, hideFirstOption = false, applyDiscount = false }: { showShareBox?: boolean, hideFirstOption?: boolean, applyDiscount?: boolean }) {
   const [selectedOptionId, setSelectedOptionId] = useState<number | null>(hideFirstOption ? 2 : 5);
   const [quantity, setQuantity] = useState(1);
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -76,8 +77,16 @@ export function TicketSelector({ showShareBox = false, hideFirstOption = false }
   const { toast } = useToast();
   
   const ticketOptions = useMemo(() => {
-    return hideFirstOption ? allTicketOptions.slice(1) : allTicketOptions;
-  }, [hideFirstOption]);
+    let options = hideFirstOption ? allTicketOptions.slice(1) : allTicketOptions;
+    if (applyDiscount) {
+      return options.map(opt => ({
+        ...opt,
+        originalPrice: opt.price,
+        price: opt.price * 0.4, // 60% off
+      }));
+    }
+    return options;
+  }, [hideFirstOption, applyDiscount]);
 
   const selectedOption = useMemo(
     () => ticketOptions.find(opt => opt.id === selectedOptionId),
@@ -210,7 +219,20 @@ export function TicketSelector({ showShareBox = false, hideFirstOption = false }
                             <Star className="absolute top-1 right-1 h-4 w-4 text-yellow-400 fill-yellow-400" />
                             )}
                             <p className="font-headline font-black text-2xl">+{option.tickets}</p>
-                            <p className="text-xs">R${option.price.toFixed(2).replace('.', ',')}</p>
+                            
+                            {applyDiscount && option.originalPrice ? (
+                                <div className='text-xs'>
+                                    <span className="line-through opacity-70">
+                                    R${option.originalPrice.toFixed(2).replace('.', ',')}
+                                    </span>{' '}
+                                    <span className="font-bold">
+                                    R${option.price.toFixed(2).replace('.', ',')}
+                                    </span>
+                                </div>
+                            ) : (
+                                <p className="text-xs">R${option.price.toFixed(2).replace('.', ',')}</p>
+                            )}
+
                             <p className="font-bold text-xs mt-1">SELECIONAR</p>
                         </button>
                         ))}

@@ -50,7 +50,7 @@ export default function OfertaPage() {
           <div className="bg-white">
               <div className="container mx-auto px-4 py-4 md:py-8">
                 <div className="max-w-2xl mx-auto">
-                  <TicketSelector hideFirstOption={true} />
+                  <TicketSelector hideFirstOption={true} applyDiscount={true} />
                   <PrizeList />
                   <VivaPrivilegios />
                 </div>

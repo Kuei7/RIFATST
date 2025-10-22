@@ -1,17 +1,14 @@
-
 "use client";
 
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { TicketSelector } from '@/components/TicketSelector';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { VivaPrivilegios } from '@/components/VivaPrivilegios';
-import { ParadisePagProvider } from '@/components/ParadisePagCheckout';
 import { PrizeList } from '@/components/PrizeList';
 import { ExitIntentPopup } from '@/components/ExitIntentPopup';
+import { ClientProviders } from '@/components/ClientProviders';
 
 function MainContent() {
   return (
@@ -59,15 +56,10 @@ function MainContent() {
 }
 
 
-export default function Home() {
-  const router = useRouter();
-  const handlePaymentConfirmed = () => {
-    router.push('/roleta');
-  };
-
+export default function HomePage() {
   return (
-    <ParadisePagProvider onPaymentConfirm={handlePaymentConfirmed}>
-      <MainContent />
-    </ParadisePagProvider>
+    <ClientProviders>
+        <MainContent />
+    </ClientProviders>
   );
 }
